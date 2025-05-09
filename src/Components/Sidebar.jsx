@@ -1,5 +1,6 @@
 import React from "react";
 import SidebarItem from "./SidebarItem";
+import "../App.css";
 
 import { Home,
     Compass,
@@ -24,8 +25,7 @@ const Sidebar = ({ isOpen }) => {
     <div>
   {isOpen ? (
     <aside
-      className="fixed top-16 left-0 h-full w-64 bg-white  p-4 scrollbar-custom scroll-smooth overflow-y-auto"
-    >
+      className=" fixed top-16 left-0 h-[calc(100vh-56px)] w-40 sm:w-48 md:w-56 lg:w-60 xl:w-64 bg-white p-4 transition-all duration-300 overflow-hidden hover:overflow-y-scroll scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-transparen">
       <nav className="flex flex-col space-y-4">
         <SidebarItem icon={<Home />} label="Home" />
         <SidebarItem icon={<Compass />} label="Explore" />
@@ -35,7 +35,7 @@ const Sidebar = ({ isOpen }) => {
       </nav>
 
       <nav className="flex flex-col space-y-4 mt-8 border-t pt-4">
-        <h2 className="text-lg h-full w-56 rounded-xl p-2 text-black font-semibold pl-3 bg-gray-100">You</h2>
+        <h2 className="text-lg h-full rounded-xl p-2 text-black font-semibold pl-3 bg-gray-100">You</h2>
         <SidebarItem icon={<Clock />} label="History" />
         <SidebarItem icon={<Play />} label="Your Videos" />
         <SidebarItem icon={<ListVideo />} label="Playlists" />
@@ -47,7 +47,7 @@ const Sidebar = ({ isOpen }) => {
       </nav>
 
       <nav className="flex flex-col space-y-4 mt-8 border-t">
-        <h2 className="text-lg h-full w-56 p-3 text-gray-800 font-semibold pl-3 ">Explore</h2>
+        <h2 className="text-lg h-full p-3 text-gray-800 font-semibold pl-3 bg-gray-100 ">Explore</h2>
         <div className="ml-6 space-y-2">
           <SidebarItem icon={<Zap />} label="Trending" />
           <SidebarItem icon={<Film />} label="Movies" />
@@ -57,7 +57,7 @@ const Sidebar = ({ isOpen }) => {
       </nav>
 
       <nav className="flex flex-col space-y-4 mt-8 border-t">
-        <h2 className="text-lg h-full w-56 p-3 text-gray-800 font-semibold pl-3">Subscriptions</h2>
+        <h2 className="text-lg h-full p-3 text-gray-800 font-semibold pl-3 bg-gray-100">Subscriptions</h2>
         <div className="ml-6 space-y-2">
           <SidebarItem icon={<User />} label="Channel 1" />
           <SidebarItem icon={<User />} label="Channel 2" />
@@ -66,7 +66,7 @@ const Sidebar = ({ isOpen }) => {
       </nav>
 
       <nav className="flex flex-col space-y-4 mt-8 border-t">
-        <h2 className="text-sm text-gray-500 font-semibold pl-3">Your Library</h2>
+        <h2 className="text-lg h-full p-3 text-gray-800 font-semibold pl-3 bg-gray-100">Your Library</h2>
         <SidebarItem icon={<Clock />} label="History" />
         <SidebarItem icon={<Play />} label="Your Videos" />
         <SidebarItem icon={<ListVideo />} label="Playlists" />
@@ -82,9 +82,10 @@ const Sidebar = ({ isOpen }) => {
         <SidebarItem icon={<MessageCircle />} label="Send Feedback" />
         <SidebarItem icon={<Flag />} label="Report History" />
       </nav>
+      
     </aside>
   ) : (
-    <aside className="fixed top-16 left-0 h-full w-20 bg-white  p-4 transition-transform duration-300">
+    <aside className="fixed top-16 left-0 h-full w-16 bg-white  p-4 transition-transform duration-300">
       <nav className="flex flex-col space-y-4">
         <SidebarItem icon={<Home/>} label="Home" collapsed />
         <SidebarItem icon={<Film />} label="Shots" collapsed />
