@@ -1,5 +1,6 @@
 import React from "react";
 import SidebarItem from "./SidebarItem";
+import { Link } from "react-router-dom";
 import "../App.css";
 
 import { Home,
@@ -27,7 +28,7 @@ const Sidebar = ({ isOpen }) => {
     <aside
       className=" fixed top-16 left-0 h-[calc(100vh-56px)] w-40 sm:w-48 md:w-56 lg:w-60 xl:w-64 bg-white p-4 transition-all duration-300 overflow-hidden hover:overflow-y-scroll scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-transparen">
       <nav className="flex flex-col space-y-4">
-        <SidebarItem icon={<Home />} label="Home" />
+        <Link to='/'><SidebarItem icon={<Home />} label="Home" /></Link>
         <SidebarItem icon={<Compass />} label="Explore" />
         <SidebarItem icon={<Video />} label="Subscriptions" />
         <SidebarItem icon={<Film />} label="Shots" />
@@ -87,7 +88,7 @@ const Sidebar = ({ isOpen }) => {
   ) : (
     <aside className="fixed top-16 left-0 h-full w-16 bg-white  p-4 transition-transform duration-300">
       <nav className="flex flex-col space-y-4">
-        <SidebarItem icon={<Home/>} label="Home" collapsed />
+         <Link to='/'><SidebarItem icon={<Home />} label="Home" collapsed/></Link>
         <SidebarItem icon={<Film />} label="Shots" collapsed />
         <SidebarItem icon={<Video />} label="Subscriptions" collapsed />
         <SidebarItem icon={<User />} label="You" collapsed/>

@@ -27,7 +27,27 @@ const dummyVideos = [
     thumbnailUrl: "https://i.ytimg.com/vi/dGcsHMXbSOA/hqdefault.jpg",
     category: "Live"
   },
-  // Add more dummy videos as needed
+   {
+      id: "video04",
+      title: "Gaming Setup Tour 2025",
+      thumbnailUrl: "https://img.jakpost.net/c/2019/09/03/2019_09_03_78912_1567484272._large.jpg",
+      description: "A walkthrough of my new gaming rig and setup.",
+      channelId: "channel04",
+      uploader: "GamerGuy",
+      views: 78600,
+      likes: 4200,
+      dislikes: 100,
+      uploadDate: "2025-03-11",
+      comments: [
+        {
+          commentId: "comment04",
+          userId: "user10",
+          text: "Your setup is goals!",
+          timestamp: "2025-03-12T10:45:00Z"
+        }
+      ]
+    }
+  
 ];
 
 const VideoList = ({ filter }) => {

@@ -1,10 +1,11 @@
 import React from "react";
 import { Link } from 'react-router-dom'
-import { Menu, Mic, Bell, CircleUserRound,} from "lucide-react";
+import { Menu, Mic, Bell, CircleUserRound,LogOut} from "lucide-react";
 import SearchBar from "./SerchBar";
+import UserMenu from "./UserMenu";
 
-
-const Header = ({ onToggleSidebar }) => {
+const Header = ({ onToggleSidebar,user, onSignOut }) => {
+ 
   return (
     <header className="flex items-center sm:gap-4 justify-between px-4 py-2 sticky top-0 bg-white z-30">
       {/* Left Section: Menu + Logo */}
@@ -46,11 +47,13 @@ const Header = ({ onToggleSidebar }) => {
         </button>
 
         {/* Sign in (hidden on xs) */}
-        <Link to="/UserRegistration">
+        {user?( <><UserMenu user={user} onSignOut={onSignOut} />
+        </>
+        ):(<Link to="/Login">
         <button className="flex items-center cursor-pointer gap-2 md:gap-1 border border-gray-300 text-blue-500 px-3 py-1 rounded-full hover:bg-blue-50 transition">
           <CircleUserRound strokeWidth={1.2} className="w-5 h-5" />
           <span className="hidden sm:inline md:flex text-sm font-medium truncate">Sign in</span>
-        </button></Link>
+        </button></Link>)}
       </div>
       
     </header>

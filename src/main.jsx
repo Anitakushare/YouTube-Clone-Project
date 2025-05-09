@@ -4,8 +4,8 @@ import './index.css'
 import App from './App.jsx'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import ErrorHandler from './Components/ErrorHandler.jsx'
-//import UserRegistration from './Components/UserLogin.jsx'
-
+import Login from './Components/Login.jsx'
+import { AuthProvider } from './Context/AuthContext';
 const appRoute=createBrowserRouter([
   {
     path:"/",
@@ -13,14 +13,16 @@ const appRoute=createBrowserRouter([
     
     errorElement:<ErrorHandler/>
   },
-  // {
-  //   path:"/UserRegistration",
-  //   element:<UserRegistration/>
-  // },
+  {
+    path:"/Login",
+    element:<Login/>
+  },
 ])
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
+    <AuthProvider>
     <RouterProvider router={appRoute}/>
+    </AuthProvider>
   </StrictMode>,
 )
