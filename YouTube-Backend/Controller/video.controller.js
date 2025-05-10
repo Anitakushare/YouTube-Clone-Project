@@ -6,6 +6,10 @@ export const addVideo= async (req,res)=>{
     try{
   const videoData=req.body;
    const newVideo=await VideoModel.create(videoData);
+    // const populatedVideo = await VideoModel.findById(newVideo._id).populate({
+    //     path: 'channelId',
+    //     select: 'name'  
+    //   });
 
    if(newVideo){
     res.status(201).json({message:"Video added successfull",newVideo});
@@ -52,3 +56,23 @@ export const fetchVideoById= async(req,res)=>{
     }
 
 }
+export const deleteVideo = async (req, res) => {
+  const { videoId } = req.params;
+  const userId = req.user.id;
+
+  try {
+    const video = await VideoModel.findById(videoId);
+    if (!video) {
+      return res.status(404).json({ message: 'Video not found' });
+    }
+
+    if (video.uploader.toString() !== userId) {
+      return res.status(403).json({ message: 'You are not authorized to delete this video' });
+    }
+
+    await video.remove();
+    res.status(200).json({ message: 'Video deleted successfully' });
+  } catch (err) {
+    res.status(500).json({ message: 'Server error', error: err.message });
+  }
+};

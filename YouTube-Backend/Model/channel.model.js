@@ -12,12 +12,15 @@ const channelSchema = new mongoose.Schema({
     ref: "user",
     required: true
   },
+  description: String,
+  channelBanner: String,
+  subscribers: Number,
+  videos: [{ type: mongoose.Schema.Types.ObjectId, ref: "Video" }],
   createdAt: {
     type: Date,
     default: Date.now
   },
-  profileImage: String, // optional
-  bannerImage: String   // optional
+ 
 });
 const ChannelModel=new mongoose.model("channel",channelSchema)
 export default ChannelModel;
