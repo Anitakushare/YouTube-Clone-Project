@@ -5,13 +5,13 @@ import { generateJwtToken } from "../Jwt/jwtGenerator.js";
 
 export const addUser=async (req,res)=>{
     try{
-    const {userName,email,password}=req.body;
+    const {userName,avatar,email,password}=req.body;
     const existingUser = await userModel.findOne({ email });
     if (existingUser) {
       return res.status(400).json({ message: "Email already in use" });
     }
   const hashPass=await bcrypt.hash(password,10);
-  const user= await userModel.create({userName,email,password:hashPass});
+  const user= await userModel.create({userName,avatar,email,password:hashPass});
 
     res.status(201).json({message:"User Added successfully",user});
 }catch(err){
@@ -31,7 +31,6 @@ export const login = async (req, res) => {
       if (!userInfo) {
         return res.status(404).json({ message: "User not found" });
       }
-      console.log("Types =>", typeof password, typeof userInfo.password);
       const validatePass = await bcrypt.compare(password.trim(),userInfo.password);
       console.log(validatePass)
      
@@ -46,6 +45,7 @@ export const login = async (req, res) => {
         token: token,
         user: {
           userName: userInfo.userName,
+          avatar:userInfo.avatar,
           email: userInfo.email
         }
       });

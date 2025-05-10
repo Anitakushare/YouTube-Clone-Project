@@ -23,6 +23,10 @@ const UserSchema = new mongoose.Schema({
         required: [true, "password is required"],
         minlength: 4,
       },
+    avatar: { type: String ,
+            required:[true,"avatar is required"],
+    },
+      channels: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Channel' }],
     createdAt: {
       type: Date,
       default: Date.now,

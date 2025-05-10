@@ -2,8 +2,8 @@ import React,{useRef} from "react";
 import '../App.css';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 const filters = [
-    'All', 'Live', 'Music', 'News', 'T-Series', 'Gaming', 'Computer programming',
-    'Tamil Cinema', 'Trailers', 'Jukebox', 'Satire', 'Dramedy', 'Playlists', 'Maths'
+    'All', 'Live', 'Music', 'Education','Gaming', 'Programming',
+    'Food', 'Health', 'Wellness', 'Nature',"Yoga","Movie",'T-Series',
   ];
   
   const FilterButtons = ({ selectedFilter, onFilterSelect }) => {
@@ -19,10 +19,10 @@ const filters = [
 
     return (
       
-      <div className="relative flex items-center">
+      <div className="relative group flex items-center">
       {/* Left Scroll Button */}
       <button
-        className="absolute left-0 z-10 bg-white p-1 shadow rounded-full"
+        className="absolute left-0 z-10 bg-white p-1 shadow rounded-full group-hover:opacity-100 "
         onClick={scrollLeft}
       >
         <ChevronLeft />
@@ -31,7 +31,7 @@ const filters = [
       {/* Scrollable Filters */}
       <div
         ref={scrollRef}
-        className="mx-8 flex overflow-x-auto gap-2 p-2 scrollbar-hide"
+        className="mx-8 flex hover:overflow-x-auto gap-2 p-2 scrollbar-hide"
       >
         {filters.map(filter => (
           <button

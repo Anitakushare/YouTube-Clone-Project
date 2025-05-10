@@ -1,28 +1,16 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState} from 'react';
 
 const UserMenu = ({ user, onSignOut }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const menuRef = useRef();
-
-  useEffect(() => {
-    const handleClickOutside = (e) => {
-      if (menuRef.current && !menuRef.current.contains(e.target)) {
-        setIsOpen(false);
-      }
-    };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
-
+ 
   return (
-    <div className="relative" ref={menuRef}>
-      <button
+    <div className="relative">
+        {user?.avatar && ( <button
         className="w-10 h-10 rounded-full bg-purple-500 text-white flex items-center justify-center"
         onClick={() => setIsOpen((prev) => !prev)}
-      >
-        {user?.userName?.charAt(0).toUpperCase()}
-      </button>
-
+      ><img src={user.avatar} alt="avatar" className="w-8 h-8 rounded-full" onError={(e) => (e.target.src = '/default-avatar.png')} /></button> 
+)}
+  
       {isOpen && (
         <div className="absolute right-0 mt-2 w-72 bg-white shadow-xl rounded-xl z-50">
           <div className="p-4 border-b">
