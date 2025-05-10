@@ -1,14 +1,18 @@
-// src/pages/Login.jsx
+// src/pages/Register.jsx
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../services/api';
-import { useAuth } from '../Context/AuthContext';
+import axios from 'axios';
 
-const Login = () => {
-  const [formData, setFormData] = useState({ email: '', password: '' });
+const Register = () => {
+  const [formData, setFormData] = useState({
+    userName: '',
+    email: '',
+    password: '',
+    avatar: ''
+  });
   const [error, setError] = useState('');
   const navigate = useNavigate();
-  const { login } = useAuth();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -18,13 +22,13 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await api.post('/user/login', formData);
-      if (res.data.user) {
-        localStorage.setItem('token', res.data.token);
-        login(res.data.user, res.data.token);
-        navigate('/');
+      const res = await api.post('/user/register', formData);
+      console.log(res)
+      if (res.data){
+
+        navigate('/login');
       } else {
-        setError('Login failed');
+        setError('Registration failed');
       }
     } catch (err) {
       setError(err?.response?.data?.message || 'Something went wrong');
@@ -41,8 +45,30 @@ const Login = () => {
             className="h-8"
           />
         </div>
-        <h2 className="text-xl font-semibold text-center mb-4">Sign in to continue</h2>
+        <h2 className="text-xl font-semibold text-center mb-4">Create your account</h2>
         <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <label className="text-sm font-medium">Username</label>
+            <input
+              type="text"
+              name="userName"
+              className="w-full mt-1 border border-gray-300 px-3 py-2 rounded focus:outline-none"
+              value={formData.userName}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <div>
+            <label className="text-sm font-medium">Avatar URL</label>
+            <input
+              type="text"
+              name="avatar"
+              className="w-full mt-1 border border-gray-300 px-3 py-2 rounded focus:outline-none"
+              value={formData.avatar}
+              onChange={handleChange}
+              required
+            />
+          </div>
           <div>
             <label className="text-sm font-medium">Email address</label>
             <input
@@ -67,15 +93,15 @@ const Login = () => {
           </div>
           {error && <p className="text-red-500 text-sm">{error}</p>}
           <button type="submit" className="w-full bg-red-500 text-white py-2 rounded hover:bg-red-600">
-            Sign in
+            Register
           </button>
         </form>
         <p className="text-xs text-center mt-4 text-gray-500">
-          Not a member? <a href="/register" className="text-red-500">Register now</a>
+          Already have an account? <a href="/login" className="text-red-500">Sign in here</a>
         </p>
       </div>
     </div>
   );
 };
 
-export default Login;
+export default Register;

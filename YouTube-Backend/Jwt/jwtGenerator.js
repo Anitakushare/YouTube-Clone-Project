@@ -1,4 +1,6 @@
 import jwt from "jsonwebtoken";
+import dotenv from "dotenv";
+dotenv.config();
 
 export const generateJwtToken = (data) => {
     return jwt.sign(
@@ -7,8 +9,8 @@ export const generateJwtToken = (data) => {
         email: data.email,
         userName: data.userName
       },
-      "ANITAKUSHAREWEBDEVELOPER", // use .env in real projects
-      { expiresIn: "1h" }
+     process.env.SECRET_KEY, // use .env in real projects
+      { expiresIn: "6h" }
     );
   };
   

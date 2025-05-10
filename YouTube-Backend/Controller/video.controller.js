@@ -23,22 +23,19 @@ export const addVideo= async (req,res)=>{
 
 }
 
-export const fetchVideo= async(req,res)=>{
-    try{
- const fetchVideos=await VideoModel.find();
-
- if(!fetchVideos || fetchVideos.length===0){
-    res.status(404).json({message:"Video Not Found!"});
- }
- res.status(200).json({message:"Succesfully fetch all videos",fetchVideos});
+export const fetchVideo = async (req, res) => {
+  try {
+    const video = await VideoModel.find();
+    if (!video) {
+      return res.status(404).json({ message: "Video not found" });
     }
-   catch(err){
-    console.log(err);
-    res.status(500).json({message:"Internl Server Error"})
 
-   }
-
-}
+    return res.status(200).json({message:"video fetched succefully",video });
+  } catch (error) {
+    console.error("Error fetching video:", error);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+};
 
 export const fetchVideoById= async(req,res)=>{
     try{

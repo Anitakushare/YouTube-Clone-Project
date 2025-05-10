@@ -12,8 +12,8 @@ export const addUser=async (req,res)=>{
     }
   const hashPass=await bcrypt.hash(password,10);
   const user= await userModel.create({userName,avatar,email,password:hashPass});
-
-    res.status(201).json({message:"User Added successfully",user});
+  const token = generateJwtToken(user);
+    res.status(201).json({message:"User Added successfully",user,token});
 }catch(err){
 
     console.log("Error Adding User",err.message);

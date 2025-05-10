@@ -1,13 +1,12 @@
 import express from 'express';
 import { addComment, updateComment, deleteComment, getComments } from '../Controller/comment.controller.js';
-import { verifyToken } from '../Middleware/auth.middleware.js';
+import { verifyJWT } from '../Middleware/verifyJwt.js';
 
-export function videoRoute(app){
+export function commentRoute(app){
 
 // Protected routes with verifyToken middleware
-router.post('/add', verifyToken, addComment);  // Add comment
-router.put('/update/:commentId', verifyToken, updateComment);  // Update comment
-router.delete('/delete/:commentId', verifyToken, deleteComment);  // Delete comment
-router.get('/video/:videoId', getComments);  // Get all comments for a specific video
-
-export default router;
+app.post('/add',  verifyJWT, addComment);  // Add comment
+app.put('/update/:commentId',  verifyJWT, updateComment);  // Update comment
+app.delete('/delete/:commentId',  verifyJWT, deleteComment);  // Delete comment
+app.get('/video/:videoId',getComments);  // Get all comments for a specific video
+}

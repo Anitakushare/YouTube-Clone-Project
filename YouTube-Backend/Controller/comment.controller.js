@@ -1,4 +1,5 @@
 import CommentModel from "../Model/comment.model.js";
+import UserModel from "../Model/user.model.js"
 //Add Comment
 export const addComment = async (req, res) => {
   try {
@@ -6,6 +7,20 @@ export const addComment = async (req, res) => {
     res.status(201).json(newComment);
   } catch (err) {
     res.status(500).json({ message: "Error adding comment" });
+  }
+};
+export const getComments = async (req, res) => {
+  try {
+    const { videoId } = req.params;
+
+    const comments = await CommentModel.find({ videoId })
+      .populate('userId', 'username avatar') // Optional: get user's name and avatar
+      .sort({ timestamp: -1 });
+
+    res.status(200).json({ comments });
+  } catch (error) {
+    console.error('Error fetching comments:', error);
+    res.status(500).json({ message: 'Failed to fetch comments' });
   }
 };
 

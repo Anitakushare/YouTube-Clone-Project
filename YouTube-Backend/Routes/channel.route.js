@@ -1,13 +1,12 @@
 import express from 'express';
-import { createChannel, getChannelByUser, updateChannel, deleteChannel } from '../Controller/channel.controller.js';
-import { jwtAuth } from '../Jwt/jwtGenerator.js';
+import { createChannel,getVideosByChannel,addVideoToChannel} from '../Controller/channel.controller.js';
+import { verifyJWT } from '../Middleware/verifyJwt.js';
 
-export function videoRoute(app){
+export function channelRoute(app){
 
 // Protected routes with verifyToken middleware
-app.post('/api/channel', jwtAuth, createChannel);  // Create a channel
-app.get('/api/channel/:id', jwtAuth, getChannelByUser);  // Get channel by user
-app.put('/api/channel/:id', jwtAuth, updateChannel);  // Update channel
-app.delete('/api/channel/:id', jwtAuth, deleteChannel);  // Delete channel
+app.post('/api/channel', verifyJWT, createChannel); // Create a channel
+app.get('/api/channel/:id', verifyJWT, addVideoToChannel) //add video to channel
+app.get('/api/channel/:id', verifyJWT, getVideosByChannel); //get channel video
 }
 
