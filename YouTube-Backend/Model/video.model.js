@@ -12,7 +12,7 @@ const videoSchema=new mongoose.Schema({
   likes: { type: Number, default: 0 },
   dislikes:{ type: Number, default: 0 },
   uploadDate:{ type: Date, default: Date.now },
-  comments:[{ type: mongoose.Schema.Types.ObjectId, ref: 'Comment' }],
+  comments:[{ type: mongoose.Schema.Types.ObjectId, ref: 'comment' }],
 }, { timestamps: true });
 
 const VideoModel=new mongoose.model("video",videoSchema);
