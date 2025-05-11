@@ -3,7 +3,7 @@ import VideoModel from "../Model/video.model.js";
 
 export const createChannel = async (req, res) => {
   try {
-    const { channelName, description, channelBanner } = req.body; // Get data from the request body
+    const { channelName, description, channelBanner, subscribers } = req.body; // Get data from the request body
 
     if (!channelName || !description) {
       return res.status(400).json({ message: 'Channel name and description are required' });
@@ -13,8 +13,10 @@ export const createChannel = async (req, res) => {
     const newChannel = new ChannelModel({
       channelName,
       description,
-      owner: req.user.userId, // Use the user ID from the JWT token
-      channelBanner,
+      owner: req.user.id, // Use the user ID from the JWT token
+       subscribers,
+        channelBanner
+
     });
 
     // Save the channel to the database

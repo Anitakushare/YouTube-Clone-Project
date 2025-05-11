@@ -2,35 +2,40 @@ import mongoose from "mongoose";
 import VideoModel from "../Model/video.model.js";
 
 
-export const addVideo= async (req,res)=>{
-    try{
-  const videoData=req.body;
-   const newVideo=await VideoModel.create(videoData);
-    // const populatedVideo = await VideoModel.findById(newVideo._id).populate({
-    //     path: 'channelId',
-    //     select: 'name'  
-    //   });
+export const addVideo = async (req, res) => {
+  try {
+    const videoData = req.body;
 
-   if(newVideo){
-    res.status(201).json({message:"Video added successfull",newVideo});
-   }
-   else{
-    res.status(404).json({message:"Error to add Video"});
-   }
-    }catch(err){
-      res.send(err)
+    const newVideo = await VideoModel.create(videoData);
+
+    const populatedVideo = await VideoModel.findById(newVideo._id)
+      .populate({ path: 'channelId', select: 'channelName' })
+      .populate({ path: 'uploader', select: 'userName avatar' }); // optional
+
+    if (populatedVideo) {
+      res.status(201).json({
+        message: "Video added successfully",
+        video: populatedVideo,
+      });
+    } else {
+      res.status(404).json({ message: "Error adding video" });
     }
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
 
-}
 
 export const fetchVideo = async (req, res) => {
   try {
-    const video = await VideoModel.find();
-    if (!video) {
+     const videos = await VideoModel.find()
+      .populate({ path: 'channelId', select: 'channelName' })
+      .populate({ path: 'uploader', select: 'userName avatar' });
+    if (!videos) {
       return res.status(404).json({ message: "Video not found" });
     }
 
-    return res.status(200).json({message:"video fetched succefully",video });
+    return res.status(200).json({message:"video fetched succefully",video:videos });
   } catch (error) {
     console.error("Error fetching video:", error);
     return res.status(500).json({ message: "Internal server error" });
@@ -38,14 +43,14 @@ export const fetchVideo = async (req, res) => {
 };
 
 export const fetchVideoById= async(req,res)=>{
-    try{
-  const {id}=req.params;
-  const fetchVideoById=await VideoModel.findById(id);
- 
-  if(!fetchVideoById){
-    res.status(404).json({message:`Video of this id ${id} not found`});
-  }
-  res.status(200).json({message:`The ideo of this Id ${id} has been fetched successfully`,fetchVideoById});
+    try {
+    const video = await VideoModel.findById(req.params.id)
+      .populate({ path: "channelId", select: "channelName" })
+      .populate({ path: "uploader", select: "userName avatar" });
+
+    if (!video) return res.status(404).json({ message: "Video not found" });
+
+    res.status(200).json({Message:"Video fetched successfully", video });
     }
     catch(err){
    console.log(err);

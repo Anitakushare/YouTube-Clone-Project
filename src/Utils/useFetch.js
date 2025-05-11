@@ -9,9 +9,10 @@ function useFetch(){
     useEffect(()=>{
         const fetchData=async()=>{
             try{
-                const response=await axios("http://localhost:3000/api/video");
-                if (response.data && Array.isArray(response.data.fetchVideos)) {
-          setData(response.data.fetchVideos); 
+                const response=await axios.get("http://localhost:3000/api/video");
+                if (response.data && Array.isArray(response.data.video)) {
+                    
+          setData(response.data.video); 
         } else {
           setError("Unexpected response format");
         }

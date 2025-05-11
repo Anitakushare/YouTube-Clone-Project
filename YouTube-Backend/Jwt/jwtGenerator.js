@@ -10,7 +10,7 @@ export const generateJwtToken = (data) => {
         userName: data.userName
       },
      process.env.SECRET_KEY, // use .env in real projects
-      { expiresIn: "6h" }
+      { expiresIn: "25h" }
     );
   };
   
