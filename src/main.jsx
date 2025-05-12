@@ -7,6 +7,7 @@ import ErrorHandler from './Components/ErrorHandler.jsx'
 import Login from './Components/Login.jsx'
 import { AuthProvider } from './Context/AuthContext';
 import Register from './Components/Register.jsx'
+import VideoPlayerPage from './Components/VideoPlayerPage.jsx'
 const appRoute=createBrowserRouter([
   {
     path:"/",
@@ -21,6 +22,10 @@ const appRoute=createBrowserRouter([
   {
     path:"/Login",
     element:<Login/>
+  },
+  {
+    path:"/video/:id",
+    element:<VideoPlayerPage/>,
   },
 ])
 

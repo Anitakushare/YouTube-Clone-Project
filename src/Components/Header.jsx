@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from 'react-router-dom'
 import { Menu, Mic, Bell, CircleUserRound,LogOut} from "lucide-react";
 import SearchBar from "./SerchBar";
-import UserMenu from "./UserMenu";
+import ProfileMenu from "./ProfileMenu";
 
 const Header = ({ onToggleSidebar,user, onSignOut }) => {
  
@@ -45,9 +45,7 @@ const Header = ({ onToggleSidebar,user, onSignOut }) => {
         <button className="p-2 rounded-full cursor-pointer hover:bg-gray-200">
           <Bell className="w-5 h-5" />
         </button>
-
-        {/* Sign in (hidden on xs) */}
-        {user?( <><UserMenu user={user} onSignOut={onSignOut} />
+        {user?( <><ProfileMenu user={user} onSignOut={onSignOut} />
         </>
         ):(<Link to="/Login">
         <button className="flex items-center cursor-pointer gap-2 md:gap-1 border border-gray-300 text-blue-500 px-3 py-1 rounded-full hover:bg-blue-50 transition">

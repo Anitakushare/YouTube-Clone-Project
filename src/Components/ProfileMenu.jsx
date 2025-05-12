@@ -1,6 +1,6 @@
 import React, { useState} from 'react';
 
-const UserMenu = ({ user, onSignOut }) => {
+const ProfileMenu = ({ user, onSignOut }) => {
   const [isOpen, setIsOpen] = useState(false);
  
   return (
@@ -39,4 +39,4 @@ const UserMenu = ({ user, onSignOut }) => {
   );
 };
 
-export default UserMenu;
+export default ProfileMenu;
