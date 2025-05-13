@@ -22,7 +22,7 @@ const filters = [
       <div className="relative group flex items-center">
       {/* Left Scroll Button */}
       <button
-        className="absolute left-0 z-10 bg-white p-1 shadow rounded-full group-hover:opacity-100 "
+        className="absolute left-0 z-10 bg-white p-1 shadow rounded-lg group-hover:opacity-100 "
         onClick={scrollLeft}
       >
         <ChevronLeft />
@@ -36,7 +36,7 @@ const filters = [
         {filters.map(filter => (
           <button
             key={filter}
-            className={`px-4 py-2 rounded-full text-sm whitespace-nowrap ${
+            className={`px-4 py-2 rounded-lg text-sm whitespace-nowrap ${
               selectedFilter === filter ? 'bg-black text-white' : 'bg-gray-200'
             }`}
             onClick={() => onFilterSelect(filter)}

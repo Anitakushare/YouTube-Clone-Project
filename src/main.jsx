@@ -8,12 +8,21 @@ import Login from './Components/Login.jsx'
 import { AuthProvider } from './Context/AuthContext';
 import Register from './Components/Register.jsx'
 import VideoPlayerPage from './Components/VideoPlayerPage.jsx'
+import HomePage from './Components/HomePage.jsx'
 const appRoute=createBrowserRouter([
   {
     path:"/",
     element:<App/>,
-    
-    errorElement:<ErrorHandler/>
+    children:[{
+     index:true,
+      element:<HomePage/>,
+    },
+  {
+    path:"/video/:id",
+    element:<VideoPlayerPage/>,
+  },],
+    errorElement:<ErrorHandler/>,
+
   },
   {
     path:"/register",
@@ -21,12 +30,8 @@ const appRoute=createBrowserRouter([
   },
   {
     path:"/Login",
-    element:<Login/>
-  },
-  {
-    path:"/video/:id",
-    element:<VideoPlayerPage/>,
-  },
+    element:<Login/>,
+  }
 ])
 
 createRoot(document.getElementById('root')).render(

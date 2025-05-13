@@ -2,10 +2,14 @@ import CommentModel from "../Model/comment.model.js";
 import UserModel from "../Model/user.model.js"
 //Add Comment
 export const addComment = async (req, res) => {
-  try {
-    const newComment = await CommentModel.create({ ...req.body, userId: req.user.id });
+   try {
+    const newComment = await CommentModel.create({
+      ...req.body,
+      postedBy: req.user.id, // ensure this matches your schema
+    });
     res.status(201).json(newComment);
   } catch (err) {
+    console.error("Add Comment Error:", err);
     res.status(500).json({ message: "Error adding comment" });
   }
 };
