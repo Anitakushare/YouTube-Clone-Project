@@ -1,18 +1,20 @@
-import React, { useEffect } from "react";
-import { Link } from 'react-router-dom'
-import { Menu, Mic, Bell, CircleUserRound,LogOut} from "lucide-react";
+import React from "react";
+import { Link } from 'react-router-dom';
+import { Menu, Mic, Bell, CircleUserRound } from "lucide-react";
 import SearchBar from "./SerchBar";
 import ProfileMenu from "./ProfileMenu";
-import useFetch from "../Utils/useFetch";
+import { useGlobal } from "../Context/GlobalContext";
+import { useAuth } from "../Context/AuthContext";
 
-const Header = ({ onToggleSidebar,user, onSignOut }) => {
-  const {data,loading,error}=useFetch();
- 
+const Header = () => {
+  const { toggleSidebar } = useGlobal();
+  const { user, logout } = useAuth();
+
   return (
     <header className="flex items-center sm:gap-4 justify-between px-4 py-2 sticky top-0 bg-white z-30">
       {/* Left Section: Menu + Logo */}
       <div className="flex items-center space-x-1">
-        <button onClick={onToggleSidebar} className="p-2 hover:bg-gray-100 rounded-full">
+        <button onClick={toggleSidebar} className="p-2 hover:bg-gray-100 rounded-full">
           <Menu className="w-6 h-6" />
         </button>
         <div className="flex items-center space-x-1">
@@ -25,37 +27,32 @@ const Header = ({ onToggleSidebar,user, onSignOut }) => {
         </div>
       </div>
 
-      {/* Middle Section: Search bar (hidden on xs) */}
+      {/* Middle Section: Search bar */}
       <div className="sm:flex items-center w-full max-w-md md:max-w-xl lg:max-w-2xl mx-4">
-        <SearchBar/>
+        <SearchBar />
       </div>
 
       {/* Right Section: Icons */}
       <div className="flex items-center gap-2">
-        {/* Mic (shown only on xs) */}
-        <button className="sm:hidden p-2 rounded-full cursor-pointer bg-gray-100 hover:bg-gray-200">
+        <button className="sm:hidden p-2 rounded-full bg-gray-100 hover:bg-gray-200">
           <Mic className="w-5 h-5" />
         </button>
 
-        {/* Create (hidden on small screens) 
-        <button className="hidden md:flex items-center gap-2 px-4 py-2 bg-gray-100 text-black rounded-full hover:bg-gray-200 transition">
-          <Plus strokeWidth={1} className="w-5 h-5" />
-          <span className="text-sm font-medium">Create</span>
-        </button> */}
-
-        {/* Notifications */}
-        <button className="p-2 rounded-full cursor-pointer hover:bg-gray-200">
+        <button className="p-2 rounded-full hover:bg-gray-200">
           <Bell className="w-5 h-5" />
         </button>
-        {user?( <><ProfileMenu user={user} onSignOut={onSignOut} />
-        </>
-        ):(<Link to="/Login">
-        <button className="flex items-center cursor-pointer gap-2 md:gap-1 border border-gray-300 text-blue-500 px-3 py-1 rounded-full hover:bg-blue-50 transition">
-          <CircleUserRound strokeWidth={1.2} className="w-5 h-5" />
-          <span className="hidden sm:inline md:flex text-sm font-medium truncate">Sign in</span>
-        </button></Link>)}
+
+        {user ? (
+          <ProfileMenu user={user} onSignOut={logout} />
+        ) : (
+          <Link to="/Login">
+            <button className="flex items-center gap-2 md:gap-1 border border-gray-300 text-blue-500 px-3 py-1 rounded-full hover:bg-blue-50 transition">
+              <CircleUserRound className="w-5 h-5" />
+              <span className="hidden sm:inline text-sm font-medium truncate">Sign in</span>
+            </button>
+          </Link>
+        )}
       </div>
-      
     </header>
   );
 };

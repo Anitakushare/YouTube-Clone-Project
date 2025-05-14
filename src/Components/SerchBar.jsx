@@ -1,18 +1,26 @@
 import { useState } from "react";
 import { Search, Mic } from "lucide-react";
+import { useGlobal } from "../Context/GlobalContext";
 
 const SearchBar = () => {
   const [showMobileSearch, setShowMobileSearch] = useState(false);
+  const { searchTerm, setSearchTerm } = useGlobal();
+
+  const handleInputChange = (e) => {
+    setSearchTerm(e.target.value);
+  };
 
   return (
     <>
-      {/* Mobile Search Icon Only */}
+      {/* Mobile Search */}
       <div className="flex sm:hidden items-center">
         {showMobileSearch ? (
           <div className="flex items-center w-full bg-white px-2 py-1 rounded-full border border-gray-300">
             <input
               type="text"
               placeholder="Search"
+              value={searchTerm}
+              onChange={handleInputChange}
               className="flex-grow px-2 py-1 outline-none"
             />
             <button className="p-2 rounded-full hover:bg-gray-100">
@@ -40,6 +48,8 @@ const SearchBar = () => {
         <input
           type="text"
           placeholder="Search"
+          value={searchTerm}
+          onChange={handleInputChange}
           className="w-full px-4 py-2 border border-gray-300 rounded-l-full focus:outline-none"
         />
         <button className="px-4 py-2 bg-gray-100 border border-l-0 border-gray-300 rounded-r-full hover:bg-gray-200">

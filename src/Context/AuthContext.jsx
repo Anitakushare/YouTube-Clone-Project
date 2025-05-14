@@ -2,9 +2,6 @@ import { createContext, useContext, useState, useEffect } from 'react';
 
 const AuthContext = createContext();
 
-// Access auth context anywhere
-export const useAuth = () => useContext(AuthContext);
-
 // Auth Provider wrapper
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
@@ -33,3 +30,5 @@ export const AuthProvider = ({ children }) => {
     </AuthContext.Provider>
   );
 };
+// Access auth context anywhere
+export const useAuth = () => useContext(AuthContext);

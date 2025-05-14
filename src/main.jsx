@@ -5,7 +5,8 @@ import App from './App.jsx'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import ErrorHandler from './Components/ErrorHandler.jsx'
 import Login from './Components/Login.jsx'
-import { AuthProvider } from './Context/AuthContext';
+import { AuthProvider } from './Context/AuthContext.jsx';
+import { GlobalContextProvider } from './Context/GlobalContext.jsx';
 import Register from './Components/Register.jsx'
 import VideoPlayerPage from './Components/VideoPlayerPage.jsx'
 import HomePage from './Components/HomePage.jsx'
@@ -37,7 +38,9 @@ const appRoute=createBrowserRouter([
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <AuthProvider>
+      <GlobalContextProvider>
     <RouterProvider router={appRoute}/>
+    </GlobalContextProvider>
     </AuthProvider>
   </StrictMode>,
 )

@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import SidebarItem from "./SidebarItem";
-import { Link } from "react-router-dom";
+import { Link,useLocation } from "react-router-dom";
+import { useGlobal } from "../Context/GlobalContext";
 import "../App.css";
 
 import { Home,
@@ -20,11 +21,16 @@ import { Home,
     ListVideo,
     Podcast} from "lucide-react"; // Optional: icon library
 
-const Sidebar = ({ isOpen }) => {
+const Sidebar = () => {
+const { toggleSidebar,isSidebarOpen } = useGlobal();
+ const location = useLocation();
+ const isVideoPage = location.pathname.startsWith("/video/");
+  if (isVideoPage && !isSidebarOpen) return null;
+
     
   return (
     <div>
-  {isOpen ? (
+  {isSidebarOpen ? (
     <aside
       className=" fixed top-16 left-0 h-[calc(100vh-56px)] w-40 sm:w-48 md:w-56 lg:w-60 xl:w-64 bg-white p-4 transition-all duration-300 overflow-hidden hover:overflow-y-scroll scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-transparen">
       <nav className="flex flex-col space-y-4">
