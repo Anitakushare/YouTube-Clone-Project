@@ -3,16 +3,16 @@ import  VideoCard  from "./VideoCard";
 import useFetch from "../Utils/useFetch";
 import { useGlobal } from "../Context/GlobalContext";
 
-const VideoList = ({ filter }) => {
+const VideoList = () => {
    const { data, loading, error } = useFetch(); // replace with your actual endpoint
-   const {searchTerm}=useGlobal()
+  const {searchTerm ,selectedFilter}=useGlobal()
 
   if (loading) return <p>Loading videos...</p>;
   if (error) return <p>Error: {error}</p>;
   if (!data) return <p>No videos found.</p>;
   if (error) return <p>Error: {error}</p>;
    const filteredVideos = data
-    .filter(video => filter === "All" || video.category === filter)
+    .filter(video => selectedFilter === "All" || video.category === selectedFilter)
     .filter(video =>
       video.title.toLowerCase().includes(searchTerm.toLowerCase())
     );

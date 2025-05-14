@@ -59,6 +59,48 @@ export const fetchVideoById= async(req,res)=>{
     }
 
 }
+
+export const updateVideo = async (req, res) => {
+  const { id } = req.params;
+  const updateFields = req.body;
+
+  try {
+    const video = await VideoModel.findById(id);
+    if (!video) return res.status(404).json({ message: "Video not found" });
+
+    // Like logic
+    if (updateFields.action === "likes") {
+      if (video.likes === undefined) video.likes = 0; // Initialize if not set
+      if (video.likes === 0) {
+        video.likes++; // Increment like if no likes yet
+      } else {
+        video.likes--; // Decrement like if it's already liked
+      }
+    }
+
+    // Dislike logic
+    if (updateFields.action === "dislikes") {
+      if (video.dislikes === undefined) video.dislikes = 0; // Initialize if not set
+      if (video.dislikes === 0) {
+        video.dislikes++; // Increment dislike if no dislikes yet
+      } 
+      
+    }
+
+    // General update fields
+    const updatableFields = ["title", "description", "thumbnailUrl", "videoUrl"];
+    updatableFields.forEach((field) => {
+      if (updateFields[field] !== undefined) {
+        video[field] = updateFields[field];
+      }
+    });
+
+    await video.save();
+    res.status(200).json(video);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
 export const deleteVideo = async (req, res) => {
   const { videoId } = req.params;
   const userId = req.user.id;

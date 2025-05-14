@@ -13,7 +13,7 @@ function VideoPlayerPage() {
   const { data } = useFetch();
   const [expanded, setExpanded] = useState(false);
   const { id } = useParams();
-  const { toggleSidebar, isSidebarOpen } = useGlobal();
+  const { toggleSidebar, isSidebarOpen,searchTerm,setSearchTerm } = useGlobal();
   const [video, setVideo] = useState(null);
   const token = localStorage.getItem("token");
   const videoRef = useRef(null);
@@ -38,9 +38,8 @@ function VideoPlayerPage() {
 
   return (
     <div className=" relative flex">
-
       {/* Sidebar only if open */}
-    {isSidebarOpen && (
+      {isSidebarOpen && (
         <div className="fixed top-0 left-0 z-20" onClick={toggleSidebar}>
           <Sidebar />
         </div>
@@ -49,15 +48,13 @@ function VideoPlayerPage() {
       {/* Main content */}
       <div
         className={`flex flex-col lg:flex-row gap-6 flex-1 p-4 overflow-y-auto transition-all duration-300 ${
-          isSidebarOpen
-            ? "ml-10"
-            : "ml-10"
+          isSidebarOpen ? "lg:ml-10" : "lg:ml-10"
         }`}
       >
         {/* Left - Video Section */}
-        
+
         <div className="flex-1">
-              {isSidebarOpen && (
+          {isSidebarOpen && (
             <div className="absolute top-0 left-0 w-full h-full bg-black opacity-50 z-10"></div>
           )}
           <VideoPlayer
@@ -68,33 +65,46 @@ function VideoPlayerPage() {
 
           <h1 className="text-2xl font-bold mt-2">{video.title}</h1>
 
-          <div className="flex items-center justify-between pt-2 gap-2">
-            <div className="flex items-center pt-4 gap-2">
-              <img
-                src={video.uploader?.avatar || "/default-avatar.png"}
-                className="w-12 h-12 rounded-full object-cover"
-                alt="Uploader"
-              />
-              <div className="flex flex-col">
-                <p className="font-semibold">{video.channelId?.channelName}</p>
-                <p className="text-gray-500 text-sm">
-                  @{video.uploader?.userName}
-                </p>
-              </div>
-              <button className="px-4 py-1 bg-gray-200 text-black rounded-full hover:bg-gray-300">
-                Join
-              </button>
-              <button className="px-2 py-1 bg-black text-white rounded-full hover:bg-gray-800">
-                Subscribe
-              </button>
-            </div>
-            <div className="flex items-center space-x-4 text-black">
-              <VideoActions likes={video.likes} dislikes={video.dislikes} />
-            </div>
-          </div>
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pt-2">
+  {/* Left side: Avatar + Info + Buttons */}
+  <div className="flex flex-col sm:flex-row sm:items-center gap-4">
+    <div className="flex items-center gap-2">
+      <img
+        src={video.uploader?.avatar || "/default-avatar.png"}
+        className="w-12 h-12 rounded-full object-cover"
+        alt="Uploader"
+      />
+      <div className="flex flex-col">
+        <p className="font-semibold">{video.channelId?.channelName}</p>
+        <p className="text-gray-500 text-sm">
+          @{video.uploader?.userName}
+        </p>
+      </div>
+    </div>
+
+    <div className="flex gap-2">
+      <button className="px-4 py-1 bg-gray-200 text-black rounded-full hover:bg-gray-300">
+        Join
+      </button>
+      <button className="px-2 py-1 bg-black text-white rounded-full hover:bg-gray-800">
+        Subscribe
+      </button>
+    </div>
+  </div>
+
+  {/* Right side: Actions */}
+  <div className="flex items-center justify-start md:justify-end text-black">
+    <VideoActions
+      videoId={video._id}
+      initialLikes={video.likes}
+      initialDislikes={video.dislikes}
+      token={token}
+    />
+  </div>
+</div>
 
           {/* Description */}
-          <div className="relative mt-4 bg-gray-100 p-4 rounded-lg text-md text-gray-900 whitespace-pre-line">
+          <div className="relative mt-4 bg-gray-100 p-4 rounded-lg text-md text-gray-900 whitespace-pre-line  overflow-hidden">
             <div
               className={`transition-all duration-500 overflow-hidden ${
                 expanded ? "max-h-[500px]" : "max-h-[100px]"
@@ -123,13 +133,14 @@ function VideoPlayerPage() {
 
         {/* Right - Suggested Videos */}
         <aside className="w-full lg:w-1/3">
-          <h2 className="text-gray-700 font-semibold mb-2">Recommended Videos</h2>
+          <h2 className="text-gray-700 font-semibold mb-2">
+            Recommended Videos
+          </h2>
           {data?.map((vid) => (
-            <VideoCard key={vid._id || vid.id} video={vid} horizontal={true}/>
+            <VideoCard key={vid._id || vid.id} video={vid} horizontal={true} />
           ))}
         </aside>
       </div>
-      
     </div>
   );
 }

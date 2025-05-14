@@ -28,7 +28,7 @@ const Header = () => {
       </div>
 
       {/* Middle Section: Search bar */}
-      <div className="sm:flex items-center w-full max-w-md md:max-w-xl lg:max-w-2xl mx-4">
+      <div className="sm:flex items-end w-full max-w-md md:max-w-xl lg:max-w-2xl mx-4">
         <SearchBar />
       </div>
 

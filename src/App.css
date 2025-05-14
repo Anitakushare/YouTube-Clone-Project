@@ -17,3 +17,48 @@
 ::-webkit-scrollbar-thumb:hover {
   background-color: rgba(0, 0, 0, 0.5);
 }
+ input[type="range"]::-webkit-slider-runnable-track {
+    height: 8px;
+    border-radius: 5px;
+  }
+  
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none; 
+    appearance: none;
+    width: 8px;
+    height: 8px;
+    background: white; 
+    border-radius: 50%;
+    cursor: pointer;
+  }
+
+  /* For Firefox */
+  input[type="range"]::-moz-range-track {
+    height: 6px;
+   
+    border-radius: 5px;
+  }
+
+  input[type="range"]::-moz-range-thumb {
+    width: 8px;
+    height: 8px;
+    background: gray;
+    border-radius: 50%;
+    cursor: pointer;
+  }
+  
+  /* For Internet Explorer */
+  input[type="range"]::-ms-track {
+    height: 6px;
+    background: transparent;
+    border-radius: 5px;
+    border: none;
+  }
+
+  input[type="range"]::-ms-thumb {
+     width: 8px;
+    height: 8px;
+    background: white;
+    border-radius: 50%;
+    cursor: pointer;
+  }

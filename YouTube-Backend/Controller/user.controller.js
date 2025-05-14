@@ -32,7 +32,7 @@ export const login = async (req, res) => {
         return res.status(404).json({ message: "User not found" });
       }
       const validatePass = await bcrypt.compare(password.trim(),userInfo.password);
-      console.log(validatePass)
+    
      
       if (!validatePass) {
         return res.status(401).json({ message: "Incorrect password" });
