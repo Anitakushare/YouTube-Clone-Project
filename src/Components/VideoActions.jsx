@@ -11,7 +11,7 @@ function VideoActions({ likes, dislikes }) {
   return (
     <div className="flex items-center space-x-4 mt-4 text-black">
       <div className="bg-gray-200 flex rounded-4xl p-1 gap-2">
-        <button className="flex items-center space-x-1 hover:text-blue-600 px-2 border-r ">
+        <button onClick={()=>{likes.length+1}} className="flex items-center space-x-1 hover:text-blue-600 px-2 border-r ">
           <ThumbsUp className="w-4 h-4" />
           <span>{formatNumber(likes)}</span>
         </button>

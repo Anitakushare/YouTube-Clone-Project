@@ -3,7 +3,7 @@ import { useRef,useState } from "react";
 import {Play,Pause,SkipBackIcon,SkipForward,Volume2,Settings,Fullscreen,MonitorPlay,RectangleHorizontal,
     MessageSquare,} from "lucide-react";
 
-function VideoPlayer({ videoUrl }) {
+function VideoPlayer({ videoUrl,thumnailUrl }) {
     const [isPlaying, setIsPlaying] = useState(false);
   const videoRef = useRef(null);
 
@@ -28,7 +28,8 @@ function VideoPlayer({ videoUrl }) {
 
   return (
     <div className="relative w-full">
-      <video ref={videoRef} src={videoUrl} controls={false} className="w-full rounded-xl" autoPlay />
+     
+      <video ref={videoRef} src={videoUrl} controls={false} className="w-full rounded-xl"  autoPlay />
         {/* Controls Overlay */}
       <div className="absolute bottom-0 left-0 right-0 flex justify-between items-center bg-black/40 px-4 py-3 rounded-b-xl">
         {/* Left Controls */}

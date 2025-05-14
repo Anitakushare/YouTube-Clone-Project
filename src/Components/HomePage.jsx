@@ -7,11 +7,10 @@ import { useOutletContext, useParams } from 'react-router-dom';
 const HomePage = () => {
   const {isSidebarOpen,user}=useOutletContext()
   const [selectedFilter, setSelectedFilter] = useState('All');
-  // const {data,error,loading}=useFetch();
-  // const {category}=useParams();
+  
 
-  const handleFilterSelect = () => {
-    setSelectedFilter(filterByCatagory);
+  const handleFilterSelect = (filter) => {
+    setSelectedFilter(filter);
   };
 
   return (

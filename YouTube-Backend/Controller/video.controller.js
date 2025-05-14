@@ -46,7 +46,8 @@ export const fetchVideoById= async(req,res)=>{
     try {
     const video = await VideoModel.findById(req.params.id)
       .populate({ path: "channelId", select: "channelName" })
-      .populate({ path: "uploader", select: "userName avatar" });
+      .populate({ path: "uploader", select: "userName avatar" })
+      .populate({path: "comments", populate: { path: "postedBy", select: "username avatar" }}) ;
 
     if (!video) return res.status(404).json({ message: "Video not found" });
 

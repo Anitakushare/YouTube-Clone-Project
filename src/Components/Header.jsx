@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from 'react-router-dom'
 import { Menu, Mic, Bell, CircleUserRound,LogOut} from "lucide-react";
 import SearchBar from "./SerchBar";
 import ProfileMenu from "./ProfileMenu";
+import useFetch from "../Utils/useFetch";
 
 const Header = ({ onToggleSidebar,user, onSignOut }) => {
+  const {data,loading,error}=useFetch();
  
   return (
     <header className="flex items-center sm:gap-4 justify-between px-4 py-2 sticky top-0 bg-white z-30">

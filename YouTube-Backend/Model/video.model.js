@@ -11,7 +11,6 @@ const videoSchema=new mongoose.Schema({
   likes: Number,
   dislikes: Number,
   category:{ type:String,required:true},
-  uploadDate: Date,
   comments: [{ type: mongoose.Schema.Types.ObjectId, ref: "comment" }], 
 },{ timestamps: true });
 

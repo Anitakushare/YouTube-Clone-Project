@@ -3,7 +3,7 @@ import '../App.css';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 const filters = [
     'All', 'Live', 'Music', 'Education','Gaming', 'Programming',
-    'Food', 'Health', 'Wellness', 'Nature',"Yoga","Movie",'T-Series',
+    'Food', 'Health', 'Wellness', 'Nature',"Yoga","Movie",'T-Series'
   ];
   
   const FilterButtons = ({ selectedFilter, onFilterSelect }) => {
@@ -31,12 +31,12 @@ const filters = [
       {/* Scrollable Filters */}
       <div
         ref={scrollRef}
-        className="mx-8 flex hover:overflow-x-auto gap-2 p-2 scrollbar-hide"
+        className="mx-8 flex overflow-x-auto gap-2 p-2 scrollbar-hide"
       >
         {filters.map(filter => (
           <button
             key={filter}
-            className={`px-4 py-2 rounded-lg text-sm whitespace-nowrap ${
+            className={`flex-shrink-0 px-4 py-2 rounded-lg text-sm whitespace-nowrap ${
               selectedFilter === filter ? 'bg-black text-white' : 'bg-gray-200'
             }`}
             onClick={() => onFilterSelect(filter)}
