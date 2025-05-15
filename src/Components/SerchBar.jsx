@@ -1,12 +1,22 @@
 import { useState } from "react";
 import { Search, Mic } from "lucide-react";
 import { useGlobal } from "../Context/GlobalContext";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const SearchBar = () => {
   const [showMobileSearch, setShowMobileSearch] = useState(false); 
   const { searchTerm, setSearchTerm } = useGlobal();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const handleSearch = () => {
+  if (searchTerm.trim() !== "") {
+    setSearchTerm(searchTerm);
+    if (location.pathname !== "/") {
+      navigate("/"); // ✅ only if you're not on home
+    }
+  }
+}
   
-
   return (
     <>
       {/* Mobile Search */}
@@ -47,7 +57,7 @@ const SearchBar = () => {
         onChange={(e) => setSearchTerm(e.target.value)}
           className="w-full px-4 py-2 border border-gray-300 rounded-l-full focus:outline-none"
         />
-        <button className="px-4 py-2 bg-gray-100 border border-l-0 border-gray-300 rounded-r-full hover:bg-gray-200">
+        <button onClick={handleSearch} className="px-4 py-2 bg-gray-100 border border-l-0 border-gray-300 rounded-r-full hover:bg-gray-200">
           <Search strokeWidth={1} className="w-6 h-6" />
         </button>
         <button className="ml-2 p-2 rounded-full bg-gray-100 hover:bg-gray-200">

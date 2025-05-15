@@ -33,6 +33,10 @@ function VideoPlayerPage() {
     };
     fetchVideo();
   }, [id, token]);
+  
+  const filteredRecommended = data?.filter((vid) =>
+  vid.title.toLowerCase().includes(searchTerm.toLowerCase())
+);
 
   if (!video) return <div className="p-4">Loading...</div>;
 
@@ -136,7 +140,7 @@ function VideoPlayerPage() {
           <h2 className="text-gray-700 font-semibold mb-2">
             Recommended Videos
           </h2>
-          {data?.map((vid) => (
+          {filteredRecommended?.map((vid) => (
             <VideoCard key={vid._id || vid.id} video={vid} horizontal={true} />
           ))}
         </aside>
