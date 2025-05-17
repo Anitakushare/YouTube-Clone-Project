@@ -20,21 +20,26 @@ const ChannelPage = () => {
   const [videos,setVideos]=useState();
 
   //Get channel Details by channel handle
-  useEffect(() => {
-    const fetchChannel = async () => {
-      try {
-        const token = localStorage.getItem("token");
-        const res = await getChannelByHandle(handle, token);
-        const resData=res.data.channel
-        setChannel(resData);
-        setNotFound(false);
-      } catch (err) {
-        console.error("Channel not found", err);
+ useEffect(() => {
+  const fetchChannel = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const res = await getChannelByHandle(handle, token);
+      const resData = res.data?.channel;
+      setChannel(resData);
+      setNotFound(false);
+    } catch (err) {
+      if (err.response?.status === 404) {
+        // Channel doesn't exist
         setNotFound(true);
+      } else {
+        // Log other unexpected errors
+        console.error("Unexpected error while fetching channel:", err);
       }
-    };
-    fetchChannel();
-  }, [handle]);
+    }
+  };
+  fetchChannel();
+}, [handle]);
 
   //If No channel created navigateto create channel page
   const handleCreateChannel = () => {
@@ -130,6 +135,7 @@ const handleVideoUpdate = (updatedVideo) => {
     }}
     editingVideo={editingVideo}
      onUpdate={handleVideoUpdate}
+     channelId={channel._id}
   />
 )}
        

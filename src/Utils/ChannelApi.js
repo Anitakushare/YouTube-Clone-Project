@@ -1,7 +1,7 @@
 import axios from "axios";
 // Create a new channel
-export const createChannel = async (formData, token) => {
-  return await axios.post("http://localhost:3000/channel", formData, {
+export const createChannel = async (form, token) => {
+  return await axios.post("http://localhost:3000/channel", form, {
     headers: {
       Authorization: `Bearer ${token}`
        // You are sending JSON, not multipart

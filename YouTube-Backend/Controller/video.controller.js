@@ -4,6 +4,7 @@ import ChannelModel from "../Model/channel.model.js";
 
 //Add videos to videos Collection
 export const addVideo = async (req, res) => {
+  console.log(req.body)
   const {
     title,
     description,

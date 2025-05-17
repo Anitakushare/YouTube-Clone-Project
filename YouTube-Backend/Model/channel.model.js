@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const channelSchema = new mongoose.Schema({
   channelName: { type: String, required: true },
-  handle: { type: String, required: true , unique: true},
+  handle: { type: String, required: true , unique: true,trim:true},
   description: { type: String, default: '' },
   owner: { type: mongoose.Schema.Types.ObjectId, ref: 'user', required: true },
   subscribers: { type: Number, default: 0 },

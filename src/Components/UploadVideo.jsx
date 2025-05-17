@@ -4,9 +4,8 @@ import { useAuth } from "../Context/AuthContext";
 
 const categories = ["Music", "Live", "Entertainment", "Sports", "Gaming", "News", "Other"];
 
-export default function VideoUpload({ onClose ,editingVideo,onUpdate}) {
+export default function VideoUpload({ onClose ,editingVideo,onUpdate,channelId}) {
     const {user}=useAuth();
-  console.log("Editing",editingVideo);
   const [formData, setFormData] = useState({
     title: "",
     thumbnailUrl: "",
@@ -55,12 +54,11 @@ export default function VideoUpload({ onClose ,editingVideo,onUpdate}) {
     setLoading(true);
     const token = localStorage.getItem("token");
     const userId = user.userId;
-    const channelId = user?.channels[0]?._id;
 
     const payload = {
       ...formData,
       uploader: userId,
-      channelId,
+      channelId:channelId,
     };
 
     if (editingVideo) {
@@ -70,6 +68,7 @@ export default function VideoUpload({ onClose ,editingVideo,onUpdate}) {
     onClose(); // Close the modal
       setMessage("Video updated successfully!");
     } else {
+      console.log("Uploading video with data:", {payload});
       // Add new video
       await addVideo(payload, token);
       setMessage("Video uploaded successfully!");

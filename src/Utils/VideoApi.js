@@ -1,11 +1,14 @@
 import axios from "axios";
 // Add a new video
-export const addVideo = async (formData, token) => {
-  const response = await axios.post("http://localhost:3000/api/video", formData, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
+export const addVideo = async (payload, token) => {
+  const response = await axios.post(
+    "http://localhost:3000/api/video",payload,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
   return response.data;
 };
 // Update a video (can update likes, dislikes, title, etc.)

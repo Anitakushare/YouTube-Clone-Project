@@ -64,6 +64,7 @@ const CreateChannel = ({ onCancel }) => {
         {/* Form */}
         <form onSubmit={handleSubmit} className="space-y-3">
           <input
+          type="text"
             name="channelName"
             placeholder="Channel Name"
             value={form.channelName}
@@ -72,6 +73,7 @@ const CreateChannel = ({ onCancel }) => {
             className="w-full p-2 border rounded"
           />
           <input
+          type="text"
             name="handle"
             placeholder="Channel Handle (e.g., mychannel123)"
             value={form.handle}
@@ -80,6 +82,7 @@ const CreateChannel = ({ onCancel }) => {
             className="w-full p-2 border rounded"
           />
           <textarea
+          type="textarea"
             name="description"
             placeholder="Channel Description"
             value={form.description}
@@ -87,6 +90,7 @@ const CreateChannel = ({ onCancel }) => {
             className="w-full p-2 border rounded"
           />
           <input
+          type="text"
             name="channelBanner"
             placeholder="Banner Image URL"
             value={form.channelBanner}
