@@ -1,123 +1,170 @@
 import mongoose from "mongoose";
 import VideoModel from "../Model/video.model.js";
+import ChannelModel from "../Model/channel.model.js";
 
-
+//Add videos to videos Collection
 export const addVideo = async (req, res) => {
+  const {
+    title,
+    description,
+    thumbnailUrl,
+    channelId,
+    videoUrl,
+    category,
+    views,
+    likes,
+    dislikes,
+    uploader,
+  } = req.body;
   try {
-    const videoData = req.body;
-
-    const newVideo = await VideoModel.create(videoData);
-
-    const populatedVideo = await VideoModel.findById(newVideo._id)
-      .populate({ path: 'channelId', select: 'channelName' })
-      .populate({ path: 'uploader', select: 'userName avatar' }); // optional
-
-    if (populatedVideo) {
-      res.status(201).json({
-        message: "Video added successfully",
-        video: populatedVideo,
-      });
-    } else {
-      res.status(404).json({ message: "Error adding video" });
+    if (!title || !channelId) {
+      return res
+        .status(400)
+        .json({ message: "Title and channelId are required" });
     }
-  } catch (err) {
-    res.status(500).json({ error: err.message });
+
+    //  Create the video
+    const newVideo = await VideoModel.create({
+      title,
+      description,
+      thumbnailUrl,
+      videoUrl,
+      category,
+      channelId,
+      likes,
+      dislikes,
+      views,
+      uploader,
+      createdAt: new Date(),
+    });
+
+    //  Add video ID to channel.videos
+    await ChannelModel.findByIdAndUpdate(channelId, {
+      $push: { videos: newVideo._id },
+    });
+
+    res
+      .status(201)
+      .json({ message: "Video added to channel", video: newVideo });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
 };
-
-
+//fetch all videos
 export const fetchVideo = async (req, res) => {
   try {
-     const videos = await VideoModel.find()
-      .populate({ path: 'channelId', select: 'channelName' })
-      .populate({ path: 'uploader', select: 'userName avatar' });
+    const videos = await VideoModel.find()
+      .populate({ path: "channelId", select: "channelName" })
+      .populate({ path: "uploader", select: "userName avatar" });
     if (!videos) {
       return res.status(404).json({ message: "Video not found" });
     }
 
-    return res.status(200).json({message:"video fetched succefully",video:videos });
+    return res
+      .status(200)
+      .json({ message: "video fetched succefully", video: videos });
   } catch (error) {
     console.error("Error fetching video:", error);
     return res.status(500).json({ message: "Internal server error" });
   }
 };
-
-export const fetchVideoById= async(req,res)=>{
-    try {
+//Fetch specific video by id
+export const fetchVideoById = async (req, res) => {
+  try {
     const video = await VideoModel.findById(req.params.id)
       .populate({ path: "channelId", select: "channelName" })
       .populate({ path: "uploader", select: "userName avatar" })
-      .populate({path: "comments", populate: { path: "postedBy", select: "username avatar" }}) ;
+      .populate({
+        path: "comments",
+        populate: { path: "postedBy", select: "username avatar" },
+      });
 
     if (!video) return res.status(404).json({ message: "Video not found" });
 
-    res.status(200).json({Message:"Video fetched successfully", video });
-    }
-    catch(err){
-   console.log(err);
-   res.status(500).json({message:"Internal Server Error"});
-    }
-
-}
-
+    res.status(200).json({ Message: "Video fetched successfully", video });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+//update video function
 export const updateVideo = async (req, res) => {
   const { id } = req.params;
-  const updateFields = req.body;
+  const updatedField = req.body;
 
   try {
     const video = await VideoModel.findById(id);
     if (!video) return res.status(404).json({ message: "Video not found" });
 
     // Like logic
-    if (updateFields.action === "likes") {
-      if (video.likes === undefined) video.likes = 0; // Initialize if not set
-      if (video.likes === 0) {
-        video.likes++; // Increment like if no likes yet
+    if (updatedField.action === "likes") {
+      if (!video.likes.includes(updatedField.userId)) {
+        video.likes.push(updatedField.userId);
+        video.dislikes = video.dislikes.filter(id => id !== updatedField.userId);
       } else {
-        video.likes--; // Decrement like if it's already liked
+        video.likes = video.likes.filter(id => id !== updatedField.userId);
+      }
+    } else if (updatedField.action === "dislikes") {
+      if (!video.dislikes.includes(updatedField.userId)) {
+        video.dislikes.push(updatedField.userId);
+        video.likes = video.likes.filter(id => id !== updatedField.userId);
+      } else {
+        video.dislikes = video.dislikes.filter(id => id !== updatedField.userId);
       }
     }
-
-    // Dislike logic
-    if (updateFields.action === "dislikes") {
-      if (video.dislikes === undefined) video.dislikes = 0; // Initialize if not set
-      if (video.dislikes === 0) {
-        video.dislikes++; // Increment dislike if no dislikes yet
-      } 
-      
-    }
-
-    // General update fields
-    const updatableFields = ["title", "description", "thumbnailUrl", "videoUrl"];
+    //video info updates
+    const updatableFields = [
+      "title",
+      "description",
+      "thumbnailUrl",
+      "videoUrl",
+      "category",
+    ];
     updatableFields.forEach((field) => {
-      if (updateFields[field] !== undefined) {
-        video[field] = updateFields[field];
+      if (updatedField[field] !== undefined) {
+        video[field] = updatedField[field];
       }
     });
 
     await video.save();
-    res.status(200).json(video);
+    //Succesfull when video update
+    res.status(200).json({ message: "Video updated", video });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res
+      .status(500)
+      .json({ message: "Error updating video", error: error.message });
   }
 };
+
+//delete video function
 export const deleteVideo = async (req, res) => {
-  const { videoId } = req.params;
+  //acces from request header
+  const { id } = req.params;
   const userId = req.user.id;
 
   try {
-    const video = await VideoModel.findById(videoId);
-    if (!video) {
-      return res.status(404).json({ message: 'Video not found' });
-    }
+    //find video by id
+    const video = await VideoModel.findById(id);
+    if (!video) return res.status(404).json({ message: "Video not found" });
 
     if (video.uploader.toString() !== userId) {
-      return res.status(403).json({ message: 'You are not authorized to delete this video' });
+      return res
+        .status(403)
+        .json({ message: "Unauthorized to delete this video" });
     }
 
-    await video.remove();
-    res.status(200).json({ message: 'Video deleted successfully' });
+    // Remove from associated channel
+    await ChannelModel.findByIdAndUpdate(video.channelId, {
+      $pull: { videos: video._id },
+    });
+
+    // Properly delete from DB
+    await VideoModel.findByIdAndDelete(id); // This actually deletes the document
+
+    res.status(200).json({ message: "Video deleted successfully" });
   } catch (err) {
-    res.status(500).json({ message: 'Server error', error: err.message });
+    res
+      .status(500)
+      .json({ message: "Error deleting video", error: err.message });
   }
 };

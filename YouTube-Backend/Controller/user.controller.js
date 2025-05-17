@@ -12,8 +12,7 @@ export const addUser=async (req,res)=>{
     }
   const hashPass=await bcrypt.hash(password,10);
   const user= await userModel.create({userName,avatar,email,password:hashPass});
-  const token = generateJwtToken(user);
-    res.status(201).json({message:"User Added successfully",user,token});
+    res.status(201).json({message:"User Added successfully",user});
 }catch(err){
 
     console.log("Error Adding User",err.message);
@@ -26,7 +25,7 @@ export const login = async (req, res) => {
       const { email, password } = req.body;
  
   
-      const userInfo = await userModel.findOne({ email });
+      const userInfo = await userModel.findOne({ email }).populate("channels");
       
       if (!userInfo) {
         return res.status(404).json({ message: "User not found" });
@@ -44,9 +43,11 @@ export const login = async (req, res) => {
         message: "Login successful",
         token: token,
         user: {
+          userId:userInfo.id,
           userName: userInfo.userName,
           avatar:userInfo.avatar,
-          email: userInfo.email
+          email: userInfo.email,
+          channels:userInfo.channels
         }
       });
   

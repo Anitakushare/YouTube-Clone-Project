@@ -3,8 +3,8 @@ import '../App.css';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useGlobal } from "../Context/GlobalContext";
 const filters = [
-    'All', 'Live', 'Music', 'Education','Gaming', 'Programming',
-    'Food', 'Health', 'Wellness', 'Nature',"Yoga","Movie",'T-Series'
+    'All', 'Live', 'Music',"Movie",'Education','Gaming', 'Programming',
+    'Food', 'Health', 'Wellness', 'Nature',"Yoga",,'T-Series'
   ];
   
   const FilterButtons = () => {

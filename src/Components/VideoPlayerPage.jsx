@@ -8,16 +8,21 @@ import Sidebar from "./Sidebar";
 import VideoPlayer from "./VideoPlayer";
 import VideoActions from "./VideoActions";
 import CommentPage from "./CommentPage";
+import { useAuth } from "../Context/AuthContext";
+
 
 function VideoPlayerPage() {
   const { data } = useFetch();
   const [expanded, setExpanded] = useState(false);
   const { id } = useParams();
-  const { toggleSidebar, isSidebarOpen,searchTerm,setSearchTerm } = useGlobal();
+  const { toggleSidebar, isSidebarOpen,searchTerm } = useGlobal();
   const [video, setVideo] = useState(null);
   const token = localStorage.getItem("token");
+  const{user}=useAuth();
+const userId=user?.userId;
+  
   const videoRef = useRef(null);
-
+//fetch video by Id
   useEffect(() => {
     const fetchVideo = async () => {
       try {
@@ -33,7 +38,6 @@ function VideoPlayerPage() {
     };
     fetchVideo();
   }, [id, token]);
-  
   const filteredRecommended = data?.filter((vid) =>
   vid.title.toLowerCase().includes(searchTerm.toLowerCase())
 );
@@ -103,6 +107,8 @@ function VideoPlayerPage() {
       initialLikes={video.likes}
       initialDislikes={video.dislikes}
       token={token}
+      userId={userId}
+
     />
   </div>
 </div>

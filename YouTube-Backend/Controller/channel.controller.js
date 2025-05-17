@@ -1,37 +1,54 @@
 import ChannelModel from "../Model/channel.model.js";
 import VideoModel from "../Model/video.model.js";
+import UserModel from "../Model/user.model.js"
 
 export const createChannel = async (req, res) => {
   try {
-    const { channelName, description, channelBanner, subscribers } = req.body; // Get data from the request body
+    const { channelName, handle, description, channelBanner } = req.body;
+    const existing = await ChannelModel.findOne({ handle });
+    if (existing) return res.status(400).json({ message: "Handle already taken" });
 
-    if (!channelName || !description) {
-      return res.status(400).json({ message: 'Channel name and description are required' });
-    }
-
-    // Create a new channel in the database
     const newChannel = new ChannelModel({
       channelName,
+      handle,
       description,
-      owner: req.user.id, // Use the user ID from the JWT token
-       subscribers,
-        channelBanner
-
+      channelBanner,
+      owner: req.user.id,
     });
 
-    // Save the channel to the database
     await newChannel.save();
 
-    return res.status(201).json({
-      message: 'Channel created successfully',
-      newChannel,
+    // Add channel to user's document
+    await UserModel.findByIdAndUpdate(req.user.id, {
+      $push: { channels: newChannel.id },
     });
+
+    res.status(201).json(newChannel);
   } catch (error) {
-    console.error(error);
-    return res.status(500).json({ message: 'Server error' });
+    res.status(500).json({ message: error.message });
   }
 };
+export const getChannelByHandle = async (req, res) => {
+  try {
+    const { handle } = req.params;
 
+    const channel = await ChannelModel.findOne( { handle: new RegExp(`^${handle}$`, 'i') } )
+      .populate('owner', 'userName avatar')
+      .populate({
+        path: 'videos',
+        select: 'title thumbnailUrl views createdAt channelId',
+        populate: {
+          path: 'channelId',
+          select: 'channelName',
+        },
+      });
+     
+    if (!channel) return res.status(404).json({ message: 'Channel not found' });
+     return res.status(200).json({ message: "Channel fetched successfully", channel });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
 export const getVideosByChannel = async (req, res) => {
   const { channelId } = req.params;
 
@@ -49,7 +66,7 @@ export const getVideosByChannel = async (req, res) => {
 
 export const addVideoToChannel = async (req, res) => {
   const { channelId } = req.params;
-  const { title, description, thumbnailUrl} = req.body;
+  const { title, description, thumbnailUrl, videoUrl, category } = req.body;
   const userId = req.user.id;
 
   try {
@@ -62,6 +79,8 @@ export const addVideoToChannel = async (req, res) => {
       title,
       description,
       thumbnailUrl,
+      videoUrl,
+      category,
       channelId: channel._id,
       uploader: userId,
     });

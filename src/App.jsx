@@ -4,6 +4,7 @@ import Header from "./Components/Header";
 import { useAuth } from './Context/AuthContext';
 import { useState,useEffect } from "react";
 
+
 function App() {
    const { logout } = useAuth();
   const [authError, setAuthError] = useState('');
@@ -27,7 +28,7 @@ function App() {
           {authError}
         </div>
       )}
-      <Outlet />
+      <Outlet/>
     </div>
   )
 }

@@ -1,5 +1,5 @@
 import { ThumbsUp, ThumbsDown, Share2, Ellipsis } from "lucide-react";
-import { updateVideo } from "../Utils/VideoApi"; // Make sure axios is imported
+import { updateVideo } from "../Utils/VideoApi";
 import { useState } from "react";
 
 function formatNumber(num) {
@@ -9,15 +9,22 @@ function formatNumber(num) {
   }).format(num);
 }
 
-function VideoActions({ videoId, initialLikes, initialDislikes, token }) {
-  const [likeCount, setLikeCount] = useState(initialLikes||[]);
-  const [dislikeCount, setDislikeCount] = useState(initialDislikes || []);
+function VideoActions({ videoId, initialLikes = [], initialDislikes = [], token, userId }) {
+  const [likes, setLikes] = useState(Array.isArray(initialLikes) ? initialLikes : []);
+  const [dislikes, setDislikes] = useState(Array.isArray(initialDislikes) ? initialDislikes : []);
 
-  const handleLike = async () => {
+  const hasLiked = likes.includes(userId);
+  const hasDisliked = dislikes.includes(userId);
+
+   const handleLike = async () => {
     try {
-      const updatedVideo = await updateVideo(videoId, { action: "likes" }, token);
-      setLikeCount(updatedVideo.likes);
-      setDislikeCount(updatedVideo.dislikes); // to sync UI
+      const updatedVideo = await updateVideo(videoId, { action: "likes", userId }, token);
+      if (updatedVideo && updatedVideo.video) {
+        setLikes(updatedVideo.video.likes || []);
+        setDislikes(updatedVideo.video.dislikes || []);
+      } else {
+        console.error("Invalid video data received:", updatedVideo);
+      }
     } catch (error) {
       console.error("Error liking video:", error);
     }
@@ -25,30 +32,33 @@ function VideoActions({ videoId, initialLikes, initialDislikes, token }) {
 
   const handleDislike = async () => {
     try {
-      const updatedVideo = await updateVideo(videoId, { action: "dislikes" }, token);
-      setLikeCount(updatedVideo.likes);
-      setDislikeCount(updatedVideo.dislikes); // to sync UI
+      const updatedVideo = await updateVideo(videoId, { action: "dislikes", userId }, token);
+      if (updatedVideo && updatedVideo.video) {
+        setLikes(updatedVideo.video.likes || []);
+        setDislikes(updatedVideo.video.dislikes || []);
+      } else {
+        console.error("Invalid video data received:", updatedVideo);
+      }
     } catch (error) {
       console.error("Error disliking video:", error);
     }
   };
-
   return (
     <div className="flex items-center space-x-4 mt-4 text-black">
       <div className="bg-gray-200 flex rounded-4xl p-1 gap-2">
         <button
           onClick={handleLike}
-          className="flex items-center space-x-1 hover:text-blue-600 px-2 border-r"
+          className={`flex items-center space-x-1 px-2 border-r ${hasLiked ? 'text-blue-600' : 'hover:text-blue-600'}`}
         >
           <ThumbsUp className="w-4 h-4" />
-          <span>{formatNumber(likeCount)}</span>
+         {formatNumber(isNaN(likes.length) ? 0 : likes.length)}
         </button>
         <button
           onClick={handleDislike}
-          className="flex items-center space-x-1 hover:text-red-600"
+          className={`flex items-center space-x-1 ${hasDisliked ? 'text-red-600' : 'hover:text-red-600'}`}
         >
           <ThumbsDown className="w-4 h-4" />
-          <span>{formatNumber(dislikeCount)}</span>
+         <span>{formatNumber(isNaN(dislikes.length) ? 0 : dislikes.length)}</span>
         </button>
       </div>
 

@@ -12,7 +12,7 @@ const SearchBar = () => {
   if (searchTerm.trim() !== "") {
     setSearchTerm(searchTerm);
     if (location.pathname !== "/") {
-      navigate("/"); // ✅ only if you're not on home
+      navigate("/"); // only if you're not on home
     }
   }
 }

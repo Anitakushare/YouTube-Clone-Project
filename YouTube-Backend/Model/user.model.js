@@ -26,7 +26,7 @@ const UserSchema = new mongoose.Schema({
     avatar: { type: String ,
             required:[true,"avatar is required"],
     },
-      channels: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Channel' }],
+      channels: [{ type: mongoose.Schema.Types.ObjectId, ref: 'channel' }],
     createdAt: {
       type: Date,
       default: Date.now,

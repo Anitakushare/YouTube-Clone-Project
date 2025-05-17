@@ -1,27 +1,51 @@
 import React, { useState} from 'react';
-
-const ProfileMenu = ({ user, onSignOut }) => {
+import { Link,useNavigate } from 'react-router-dom';
+import { useAuth } from '../Context/AuthContext';
+const ProfileMenu = () => {
   const [isOpen, setIsOpen] = useState(false);
- 
+   const navigate = useNavigate();
+   const {user,logout}=useAuth();
+
+   const handleLogout = () => {
+    logout();          // Clear auth data
+    navigate("/");     // Redirect to home
+  };
+  
   return (
     <div className="relative">
         {user?.avatar && ( <button
-        className="w-10 h-10 rounded-full bg-purple-500 text-white flex items-center justify-center"
+        className="w-10 h-10 rounded-full  text-white flex items-center justify-center"
         onClick={() => setIsOpen((prev) => !prev)}
       ><img src={user.avatar} alt="avatar" className="w-8 h-8 rounded-full" onError={(e) => (e.target.src = '/default-avatar.png')} /></button> 
 )}
   
       {isOpen && (
-        <div className="absolute right-0 mt-2 w-72 bg-white shadow-xl rounded-xl z-50">
+        <div className="absolute right-0 mt-2 w-72 bg-white shadow-xl rounded-xl z-500">
           <div className="p-4 border-b">
             <p className="font-semibold text-lg">{user.userName}</p>
             <p className="text-lg text-gray-500">@{user.userName}</p>
-            <a href="/channel" className="text-blue-600 text-sm mt-1 block">View your channel</a>
+           
+     {user.channels && user.channels.length > 0 && user.channels[0].handle ? (
+        <Link
+          to={`/channel/${user.channels[0].handle}`}
+          className="text-blue-600 text-sm mt-1 block"
+        >
+          View your channel
+        </Link>
+      ) : (
+        <Link
+          to="/channel/:handel"
+          className="text-blue-600 text-sm mt-1 block"
+        >
+          View Your Channel
+        </Link>
+      )}
+
           </div>
           <ul className="p-2 text-sm">
             <li className="p-2 hover:bg-gray-100 cursor-pointer">Google Account</li>
             <li className="p-2 hover:bg-gray-100 cursor-pointer">Switch account</li>
-            <li className="p-2 hover:bg-gray-100 cursor-pointer" onClick={onSignOut}>Sign out</li>
+            <li className="p-2 hover:bg-gray-100 cursor-pointer" onClick={handleLogout}>Sign out</li>
             <li className="p-2 hover:bg-gray-100 cursor-pointer">YouTube Studio</li>
             <li className="p-2 hover:bg-gray-100 cursor-pointer">Purchases and memberships</li>
           </ul>
@@ -35,6 +59,7 @@ const ProfileMenu = ({ user, onSignOut }) => {
           </ul>
         </div>
       )}
+      
     </div>
   );
 };
