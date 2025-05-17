@@ -95,7 +95,12 @@ export const updateVideo = async (req, res) => {
   try {
     const video = await VideoModel.findById(id);
     if (!video) return res.status(404).json({ message: "Video not found" });
-
+   
+if (updatedField.action === "views" && updatedField.userId) {
+      if (!video.views.includes(updatedField.userId)) {
+        video.views.push(updatedField.userId);
+      }
+    }
     // Like logic
     if (updatedField.action === "likes") {
       if (!video.likes.includes(updatedField.userId)) {
@@ -133,6 +138,25 @@ export const updateVideo = async (req, res) => {
     res
       .status(500)
       .json({ message: "Error updating video", error: error.message });
+  }
+};
+export const updateViewCount=async(req,res)=>{
+  const { id } = req.params;
+  const { userId } = req.body;
+
+  try {
+    const video = await VideoModel.findById(id);
+    if (!video) return res.status(404).json({ message: "Video not found" });
+
+    // Add userId to views if not already present
+    if (userId && !video.views.includes(userId)) {
+      video.views.push(userId);
+      await video.save();
+    }
+
+    res.json({ success: true, viewsCount: video.views.length });
+  } catch (error) {
+    res.status(500).json({ message: "Error updating views" });
   }
 };
 

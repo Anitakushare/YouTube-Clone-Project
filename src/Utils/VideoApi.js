@@ -17,6 +17,18 @@ export const updateVideo = async (videoId,payload, token) => {
   });
   return response.data;
 };
+export const updateViewCount = async (videoId, userId, token) => {
+    const response = await axios.put(
+      `http://localhost:3000/api/video/${videoId}/view`,
+      { userId },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+   return response.data;
+};
 
 // Delete a video
 export const deleteVideo = async (videoId, token) => {

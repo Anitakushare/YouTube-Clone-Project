@@ -9,7 +9,6 @@ const VideoCard = ({
   onDelete,
   showMenu,
 }) => {
-
   const [menuOpen, setMenuOpen] = useState(false);
   if (horizontal) {
     return (
@@ -29,7 +28,7 @@ const VideoCard = ({
             {video.channelId?.channelName}
           </p>
           <p className="text-xs text-gray-500 truncate mt-0.5">
-            {video.views?.toLocaleString()} views
+            {(video.views?.length || 0).toLocaleString()} views
           </p>
         </div>
       </Link>
@@ -39,14 +38,23 @@ const VideoCard = ({
   // Default vertical card layout
   return (
     <div className="relative group z-50">
-      <Link to={`/video/${video._id}`} onClick={(e) => menuOpen && e.preventDefault()}>
+      <Link
+        to={`/video/${video._id}`}
+        onClick={(e) => menuOpen && e.preventDefault()}
+      >
         <img
           src={video.thumbnailUrl}
           className="w-full h-50 object-cover rounded-xl shadow-black z-50"
         />
-        <h3 className="mt-2 text-lg text-black font-semibold line-clamp-2">{video.title}</h3>
-        <p className="text-md text-gray-700">0{video.views} views</p>
-         <p className="text-md text-gray-700">@{video?.channelId?.channelName}</p>
+        <h3 className="mt-2 text-lg text-black font-semibold line-clamp-2">
+          {video.title}
+        </h3>
+        <p className="text-md text-gray-700">
+          {(video.views?.length || 0).toLocaleString()} views
+        </p>
+        <p className="text-md text-gray-700">
+          @{video?.channelId?.channelName}
+        </p>
       </Link>
 
       {showMenu && (

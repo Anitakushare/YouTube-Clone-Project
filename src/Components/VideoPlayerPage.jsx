@@ -9,6 +9,7 @@ import VideoPlayer from "./VideoPlayer";
 import VideoActions from "./VideoActions";
 import CommentPage from "./CommentPage";
 import { useAuth } from "../Context/AuthContext";
+import { updateViewCount } from "../Utils/VideoApi";
 
 
 function VideoPlayerPage() {
@@ -32,12 +33,16 @@ const userId=user?.userId;
           },
         });
         setVideo(res.data.video);
+
+         if (userId) {
+        await updateViewCount(id, userId, token);
+      }
       } catch (err) {
         console.error("Failed to fetch video", err);
       }
     };
     fetchVideo();
-  }, [id, token]);
+  }, [id, token,userId]);
   const filteredRecommended = data?.filter((vid) =>
   vid.title.toLowerCase().includes(searchTerm.toLowerCase())
 );
@@ -147,7 +152,7 @@ const userId=user?.userId;
             Recommended Videos
           </h2>
           {filteredRecommended?.map((vid) => (
-            <VideoCard key={vid._id || vid.id} video={vid} horizontal={true} />
+            <VideoCard key={vid._id || vid.id} video={vid} horizontal={true} views={video.views.length.toLocaleString()} />
           ))}
         </aside>
       </div>
