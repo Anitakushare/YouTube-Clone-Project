@@ -16,9 +16,9 @@ export const getChannelByHandle = async (handle, token) => {
   });
 };
 
-// Add a video to a channel
-export const addVideoToChannel = async (channelId, videoData, token) => {
-  return await axios.post(`http://localhost:3000/channel/${channelId}/video`, videoData, {
-    headers: { Authorization: `Bearer ${token}`},
-  });
-};
+// // Add a video to a channel
+// export const addVideoToChannel = async (channelId, videoData, token) => {
+//   return await axios.post(`http://localhost:3000/channel/${channelId}/video`, videoData, {
+//     headers: { Authorization: `Bearer ${token}`},
+//   });
+// };

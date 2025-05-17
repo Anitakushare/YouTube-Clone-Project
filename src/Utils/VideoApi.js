@@ -1,8 +1,11 @@
 import axios from "axios";
 // Add a new video
-export const addVideo = async (payload, token) => {
+export const addVideo = async (channelId, formDataWithUploader, token) => {
   const response = await axios.post(
-    "http://localhost:3000/api/video",payload,
+    "http://localhost:3000/api/video",{
+      ...formDataWithUploader,
+      channelId, 
+    },
     {
       headers: {
         Authorization: `Bearer ${token}`,

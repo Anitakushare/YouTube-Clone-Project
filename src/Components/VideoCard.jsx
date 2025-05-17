@@ -37,30 +37,30 @@ const VideoCard = ({
 
   // Default vertical card layout
   return (
-    <div className="relative group z-50">
+    <div className="relative group">
       <Link
         to={`/video/${video._id}`}
         onClick={(e) => menuOpen && e.preventDefault()}
       >
         <img
           src={video.thumbnailUrl}
-          className="w-full h-50 object-cover rounded-xl shadow-black z-50"
+          className="w-full h-50 object-cover rounded-xl shadow-black"
         />
-        <h3 className="mt-2 text-lg text-black font-semibold line-clamp-2">
+        <h3 className="mt-2 text-lg text-black font-semibold truncate line-clamp-2">
           {video.title}
         </h3>
-        <p className="text-md text-gray-700">
+        <p className="text-sm text-gray-700">
           {(video.views?.length || 0).toLocaleString()} views
         </p>
-        <p className="text-md text-gray-700">
-          @{video?.channelId?.channelName}
+        <p className="text-sm text-gray-700">
+          {video?.channelId?.channelName}
         </p>
       </Link>
 
       {showMenu && (
         <div className="absolute bottom-4 right-0">
           <EllipsisVertical
-            className="w-6 h-6 text-black cursor-pointer"
+            className="w-6 h-6 text-gray-400 cursor-pointer"
             onClick={() => setMenuOpen(!menuOpen)}
           />
           {menuOpen && (

@@ -5,26 +5,35 @@ import ChannelModel from "../Model/channel.model.js";
 //Add videos to videos Collection
 export const addVideo = async (req, res) => {
   console.log(req.body)
-  const {
-    title,
-    description,
-    thumbnailUrl,
-    channelId,
-    videoUrl,
-    category,
-    views,
-    likes,
-    dislikes,
-    uploader,
-  } = req.body;
   try {
+    const {
+      title,
+      description,
+      thumbnailUrl,
+      channelId,
+      videoUrl,
+      category,
+      views,
+      likes,
+      dislikes,
+    } = req.body;
+
     if (!title || !channelId) {
-      return res
-        .status(400)
-        .json({ message: "Title and channelId are required" });
+      return res.status(400).json({ message: "Title and channelId are required" });
     }
 
-    //  Create the video
+    // Confirm channel exists and belongs to logged-in user
+    const channel = await ChannelModel.findById(channelId);
+    if (!channel) {
+      return res.status(404).json({ message: "Channel not found" });
+    }
+
+    // Ownership check
+    if (channel.owner.toString() !== req.user.id) {
+      return res.status(403).json({ message: "You can only upload videos to your own channel" });
+    }
+
+    // Create the video
     const newVideo = await VideoModel.create({
       title,
       description,
@@ -32,25 +41,23 @@ export const addVideo = async (req, res) => {
       videoUrl,
       category,
       channelId,
-      likes,
-      dislikes,
-      views,
-      uploader,
+      likes: [],
+      dislikes: [],
+      views: [],
+      uploader: req.user.id, // Use logged-in user ID directly for uploader
       createdAt: new Date(),
     });
 
-    //  Add video ID to channel.videos
-    await ChannelModel.findByIdAndUpdate(channelId, {
-      $push: { videos: newVideo._id },
-    });
+    // Add video ID to channel's videos array
+    channel.videos.push(newVideo._id);
+    await channel.save();
 
-    res
-      .status(201)
-      .json({ message: "Video added to channel", video: newVideo });
+    res.status(201).json({ message: "Video added to channel", video: newVideo });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
+
 //fetch all videos
 export const fetchVideo = async (req, res) => {
   try {

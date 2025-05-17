@@ -2,8 +2,10 @@ import React, { useState } from 'react';
 import { useAuth } from '../Context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 
-const ChannelHeader = ({ channel, notFound }) => {
+const ChannelHeader = ({ channel, notFound,activeTab,setActiveTab }) => {
   const [showFullDescription, setShowFullDescription] = useState(false);
+   
+  
   const {user}=useAuth();
   const navigate=useNavigate();
   const handleNavigate=()=>{
@@ -13,7 +15,7 @@ const ChannelHeader = ({ channel, notFound }) => {
   const handleReadMoreToggle = () => {
     setShowFullDescription(!showFullDescription);
   };
-
+  
   // If user doesn't have a channel
   if (notFound) {
     return (
@@ -26,16 +28,21 @@ const ChannelHeader = ({ channel, notFound }) => {
   />
   <h1 className="text-2xl font-bold text-gray-800 mt-2">{user?.userName}</h1>
 </div>
-  <div className="mt-8 border-b border-gray-300">
-    <nav className="flex flex-wrap gap-4 text-md font-medium text-gray-600 justify-center sm:justify-start">
-      <span className="cursor-pointer pb-2 border-b-2 border-black">Home</span>
-      <span className="cursor-pointer hover:text-black">Videos</span>
-      <span className="cursor-pointer hover:text-black">Shorts</span>
-      <span className="cursor-pointer hover:text-black">Live</span>
-      <span className="cursor-pointer hover:text-black">Playlists</span>
-      <span className="cursor-pointer hover:text-black">Community</span>
-    </nav>
-  </div>
+ <div className="mt-6 border-b border-gray-200">
+  <nav className="flex space-x-6 text-sm font-medium text-gray-600">
+    {["Home", "Videos", "Shorts", "Live", "Playlists", "Community"].map((tab) => (
+      <span
+        key={tab}
+        className={`cursor-pointer pb-2 ${
+          activeTab === tab ? "text-black border-b-2 border-black" : "hover:text-black"
+        }`}
+        onClick={() => setActiveTab(tab)}
+      >
+        {tab}
+      </span>
+    ))}
+  </nav>
+</div>
 
   <div className="flex flex-col items-center justify-center text-center mt-16 px-4">
     <h2 className="text-xl sm:text-2xl font-semibold mb-2 text-gray-800">No Channel Available</h2>
@@ -97,18 +104,21 @@ const ChannelHeader = ({ channel, notFound }) => {
         </div>
       </div>
 
-      <div className="mt-6 border-b border-gray-200">
+       <div className="mt-6 border-b border-gray-200">
         <nav className="flex space-x-6 text-sm font-medium text-gray-600">
-          <span className="cursor-pointer pb-2 border-b-2 border-black">Home</span>
-          <span className="cursor-pointer hover:text-black">Videos</span>
-          <span className="cursor-pointer hover:text-black">Shorts</span>
-          <span className="cursor-pointer hover:text-black">Live</span>
-          <span className="cursor-pointer hover:text-black">Playlists</span>
-          <span className="cursor-pointer hover:text-black">Community</span>
+          {["Home", "Videos", "Shorts", "Live", "Playlists", "Community"].map((tab) => (
+            <span
+              key={tab}
+              className={`cursor-pointer pb-2 ${
+                activeTab === tab ? "text-black border-b-2 border-black" : "hover:text-black"
+              }`}
+              onClick={() => setActiveTab(tab)}
+            >
+              {tab}
+            </span>
+          ))}
         </nav>
       </div>
-    </div>
-  );
-};
-
+     
+   </div> )}
 export default ChannelHeader;

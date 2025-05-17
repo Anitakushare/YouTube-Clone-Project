@@ -9,38 +9,40 @@ import VideoCard from "./VideoCard";
 import UploadVideo from "./UploadVideo";
 import { deleteVideo } from "../Utils/VideoApi";
 
+//channel page component
 const ChannelPage = () => {
+  const { channel, setChannel, toggleSidebar, isSidebarOpen } = useGlobal();
   const { handle } = useParams();
-  const [channel, setChannel] = useState(null);
-  const [notFound, setNotFound] = useState(false);
   const navigate = useNavigate();
-  const { toggleSidebar, isSidebarOpen } = useGlobal();
   const [showModal, setShowModal] = useState(false);
   const [editingVideo, setEditingVideo] = useState(null);
-  const [videos,setVideos]=useState();
+  const [videos, setVideos] = useState();
+ //const [videoFilter, setVideoFilter] = useState('Latest');
+    const [activeTab,setActiveTab]=useState("Home");
+  const [notFound, setNotFound] = useState(false);
 
   //Get channel Details by channel handle
- useEffect(() => {
-  const fetchChannel = async () => {
-    try {
-      const token = localStorage.getItem("token");
-      const res = await getChannelByHandle(handle, token);
-      const resData = res.data?.channel;
-      setChannel(resData);
-      setNotFound(false);
-    } catch (err) {
-      if (err.response?.status === 404) {
-        // Channel doesn't exist
-        setNotFound(true);
-      } else {
-        // Log other unexpected errors
-        console.error("Unexpected error while fetching channel:", err);
+  useEffect(() => {
+    const fetchChannel = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const res = await getChannelByHandle(handle, token);
+        const resData = res.data?.channel;
+        setChannel(resData);
+        setVideos(resData?.videos || []);
+        setNotFound(false);
+      } catch (err) {
+        if (err.response?.status === 404) {
+          // Channel doesn't exist
+          setNotFound(true);
+        } else {
+          // Log other unexpected errors
+          console.error("Unexpected error while fetching channel:", err);
+        }
       }
-    }
-  };
-  fetchChannel();
-}, [handle]);
-
+    };
+    fetchChannel();
+  }, [handle, setChannel]);
   //If No channel created navigateto create channel page
   const handleCreateChannel = () => {
     navigate("/create-channel");
@@ -48,24 +50,23 @@ const ChannelPage = () => {
   //Edit Video Function
   const handleEdit = (video) => {
     setEditingVideo(video);
-    setShowModal(true); 
+    setShowModal(true);
   };
-const handleVideoUpdate = (updatedVideo) => {
-  setVideos((prevVideos) =>
-    prevVideos.map((video) =>
-      video._id === updatedVideo._id ? updatedVideo : video
-    )
-  );
-};
+  const handleVideoUpdate = (updatedVideo) => {
+    setVideos((prevVideos) =>
+      prevVideos.map((video) =>
+        video._id === updatedVideo._id ? updatedVideo : video
+      )
+    );
+  };
   //Handle Delete function api call for delete perticular video
   const handleDelete = async (videoId) => {
-  
-   if (!window.confirm("Are you sure you want to delete this video?")) return;
+    if (!window.confirm("Are you sure you want to delete this video?")) return;
     try {
-        //acces token from local storage
+      //acces token from local storage
       const token = localStorage.getItem("token");
-      await deleteVideo(videoId,token);
-       console.log("Deleting video with ID:", videoId);
+      await deleteVideo(videoId, token);
+      // Instead of updating channel.videos, update the videos state
       setChannel((prev) => ({
         ...prev,
         videos: prev.videos.filter((v) => v._id !== videoId),
@@ -74,20 +75,38 @@ const handleVideoUpdate = (updatedVideo) => {
       console.error("Delete failed", err);
     }
   };
- 
+  //Filter video by catagory like Popular ,Latest,Older
+  //   const getFilteredVideos = () => {
+  //   if (!channel?.videos) return [];
+  
+  //   let filtered = [...channel.videos];
+  
+  //   if (videoFilter === "Latest") {
+  //     filtered.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+  //   } else if (videoFilter === "Oldest") {
+  //     filtered.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+  //   } else if (videoFilter === "Popular") {
+  //     filtered.sort((a, b) => b.likes.length - a.likes.length); // or b.views - a.views
+  //   }
+  
+  //   return filtered;
+  // };
   return (
     <div className="relative flex">
-        {/**sidebar Toggel */}
+      {/**sidebar Toggel */}
       {isSidebarOpen && (
         <div className="fixed top-0 left-0 z-20" onClick={toggleSidebar}>
           <Sidebar />
         </div>
       )}
+      {/**Call to channel header Component */}
       <div className="w-full max-w-screen-lg mx-auto p-4 ">
         <ChannelHeader
           channel={channel}
           notFound={notFound}
           onCreate={handleCreateChannel}
+          activeTab={activeTab}
+         setActiveTab={setActiveTab}
         />
 
         {/* Video Grid */}
@@ -95,7 +114,7 @@ const handleVideoUpdate = (updatedVideo) => {
           <>
             {channel?.videos?.length > 0 ? (
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-6 text-md">
-                {channel?.videos?.map((vid) => (
+                {videos?.map((vid) => (
                   <VideoCard
                     key={vid._id || vid.id}
                     video={vid}
@@ -125,21 +144,20 @@ const handleVideoUpdate = (updatedVideo) => {
           </>
         )}
       </div>
+       
       {/* Modal */}
       {showModal && (
-  <UploadVideo
-    onClose={() => {
-      setShowModal(false);
-      setEditingVideo(null);
-     
-    }}
-    editingVideo={editingVideo}
-     onUpdate={handleVideoUpdate}
-     channelId={channel._id}
-  />
-)}
-       
-    </div>
+        <UploadVideo
+          onClose={() => {
+            setShowModal(false);
+            setEditingVideo(null);
+          }}
+          editingVideo={editingVideo}
+          onUpdate={handleVideoUpdate}
+        />
+      )}
+      
+    </div>  
   );
 };
 

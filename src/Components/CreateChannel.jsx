@@ -26,6 +26,7 @@ const CreateChannel = ({ onCancel }) => {
     try {
       const response = await createChannel(form, token);
       const newChannel = response.data;
+      setForm(newChannel);
       navigate(`/channel/${newChannel.handle}`);
     } catch (err) {
       setError(err.response?.data?.message || "Channel creation failed.");
@@ -33,7 +34,7 @@ const CreateChannel = ({ onCancel }) => {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center">
+    <div className="fixed inset-0 bg-transparent bg-opacity-40 backdrop-blur-sm flex justify-center items-start pt-16 z-50 overflow-auto">
       {/* Overlay */}
       <div
         className="absolute inset-0 bg-gray-200 backdrop-blur-sm"

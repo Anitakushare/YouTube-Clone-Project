@@ -1,11 +1,19 @@
 import React, { useState ,useEffect} from "react";
 import { addVideo,updateVideo} from "../Utils/VideoApi";
 import { useAuth } from "../Context/AuthContext";
+import { useGlobal } from "../Context/GlobalContext";
+//import { useParams } from "react-router-dom";
 
 const categories = ["Music", "Live", "Entertainment", "Sports", "Gaming", "News", "Other"];
 
-export default function VideoUpload({ onClose ,editingVideo,onUpdate,channelId}) {
+export default function VideoUpload({ onClose ,editingVideo,onUpdate}) {
+  const {channel}=useGlobal()
     const {user}=useAuth();
+    const channelId = channel?._id;
+   
+ //const { handle } = useParams(); // get channel handle from URL
+
+  
   const [formData, setFormData] = useState({
     title: "",
     thumbnailUrl: "",
@@ -54,11 +62,10 @@ export default function VideoUpload({ onClose ,editingVideo,onUpdate,channelId})
     setLoading(true);
     const token = localStorage.getItem("token");
     const userId = user.userId;
-
     const payload = {
       ...formData,
       uploader: userId,
-      channelId:channelId,
+      channelId:channelId
     };
 
     if (editingVideo) {
@@ -70,7 +77,9 @@ export default function VideoUpload({ onClose ,editingVideo,onUpdate,channelId})
     } else {
       console.log("Uploading video with data:", {payload});
       // Add new video
-      await addVideo(payload, token);
+     const response = await addVideo(channelId, { ...formData, uploader: userId }, token);
+      setFormData(response);
+
       setMessage("Video uploaded successfully!");
     }
 

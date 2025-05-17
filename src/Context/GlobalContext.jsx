@@ -6,7 +6,7 @@ export const GlobalContextProvider = ({ children }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [selectedFilter, setSelectedFilter] = useState('All');
   const [searchTerm, setSearchTerm] = useState('');
-
+  const [channel,setChannel]=useState(null);
   const toggleSidebar = () => {
     setIsSidebarOpen((prev) => !prev);
   };
@@ -18,11 +18,14 @@ export const GlobalContextProvider = ({ children }) => {
       selectedFilter,
       setSelectedFilter,
       searchTerm,
-      setSearchTerm
+      setSearchTerm,
+      channel,
+      setChannel
     }}>
       {children}
     </GlobalContext.Provider>
   );
 };
+
 
 export const useGlobal = () => useContext(GlobalContext);
