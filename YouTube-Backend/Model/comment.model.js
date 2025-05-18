@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-
+//comment model
 const commentSchema = new mongoose.Schema({
   content: {
     type: String,
@@ -7,12 +7,12 @@ const commentSchema = new mongoose.Schema({
     trim: true
   },
   video: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: mongoose.Schema.Types.ObjectId, //video Model reference
     ref: "video",
     required: true
   },
   postedBy: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: mongoose.Schema.Types.ObjectId,//user model Reference
     ref: "user",
     required: true
   },

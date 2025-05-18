@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-
+// Authentication middleware to verify user credentials
 export const verifyJWT = (req, res, next) => {
   const authHeader = req.headers.authorization;
 

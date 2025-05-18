@@ -1,6 +1,6 @@
 
 import mongoose from "mongoose";
-
+//user model
 const UserSchema = new mongoose.Schema({
    userName: {
       type: String,
@@ -26,7 +26,7 @@ const UserSchema = new mongoose.Schema({
     avatar: { type: String ,
             required:[true,"avatar is required"],
     },
-      channels: [{ type: mongoose.Schema.Types.ObjectId, ref: 'channel' }],
+      channels: [{ type: mongoose.Schema.Types.ObjectId, ref: 'channel' }],//channel model: store channel info
     createdAt: {
       type: Date,
       default: Date.now,
