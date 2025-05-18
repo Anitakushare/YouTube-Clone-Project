@@ -5,7 +5,7 @@ const useFetch = () => {
   const [data, setData] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
-
+//fetch all videos from backend
   useEffect(() => {
     const fetchData = async () => {
       try {

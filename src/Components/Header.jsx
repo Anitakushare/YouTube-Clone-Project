@@ -9,7 +9,9 @@ import CreateChannel from "./CreateChannel";
 import VideoUpload from "./UploadVideo";
 
 const Header = () => {
+    // Toggle sidebar visibility from global context
   const { toggleSidebar } = useGlobal();
+  //login logout function 
   const { user, logout } = useAuth();
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [showCreateOptions, setShowCreateOptions] = useState(false);
@@ -17,7 +19,7 @@ const Header = () => {
 
   return (
     <header className="flex items-center sm:gap-4 justify-between px-4 py-2 sticky top-0 bg-white z-30">
-      {/* Left Section: Menu + Logo */}
+      {/* Left Section: Menu , Logo */}
       <div className="flex items-center space-x-1">
         <button
           onClick={toggleSidebar}
@@ -45,6 +47,7 @@ const Header = () => {
         <button className="sm:hidden p-2 rounded-full bg-gray-100 hover:bg-gray-200">
           <Mic className="w-5 h-5" />
         </button>
+          {/* Create button with dropdown for channel or video upload */}
         <div className="relative">
   <button
     onClick={() => {
@@ -56,7 +59,7 @@ const Header = () => {
     <Plus className="w-5 h-5 mr-1" />
     Create
   </button>
-
+{/* Dropdown menu shown when 'Create' is toggled */}
   {showCreateOptions && (
     <div className="absolute mt-1 w-40 bg-white rounded-lg shadow-md z-50">
       <button
@@ -83,7 +86,7 @@ const Header = () => {
         <button className="p-2 rounded-full hover:bg-gray-200">
           <Bell className="w-5 h-5" />
         </button>
-
+{/* If user is logged in, show profile menu, else show sign-in button */}
         {user ? (
           <ProfileMenu user={user} onSignOut={logout} />
         ) : (
@@ -97,11 +100,13 @@ const Header = () => {
           </Link>
         )}
       </div>
+      {/* Modal for Create Channel */}
       {showCreateModal && (
         <div className="fixed inset-0 bg-transparent bg-opacity-50 z-50 flex items-center justify-center">
           <CreateChannel onCancel={() => setShowCreateModal(false)} />
         </div>
       )}
+       {/* Modal for Video Upload */}
       {showCreateModal === "upload" && (
   <div className="fixed inset-0 bg-black bg-opacity-40 z-50 flex items-center justify-center">
     <VideoUpload onClose={() => setShowCreateModal(null)} />

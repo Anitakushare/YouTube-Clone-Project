@@ -1,7 +1,7 @@
 import ChannelModel from "../Model/channel.model.js";
-import VideoModel from "../Model/video.model.js";
+//import VideoModel from "../Model/video.model.js";
 import UserModel from "../Model/user.model.js";
-
+//Cretae Channel function
 export const createChannel = async (req, res) => {
   try {
     const { channelName, handle, description, channelBanner } = req.body;
@@ -29,11 +29,12 @@ export const createChannel = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+//get channel info by its Handle
 export const getChannelByHandle = async (req, res) => {
   try {
     const { handle } = req.params;
     const trimmedHandle = handle.trim();
-
+    //find channel by handle and populate user,channel,video
     const channel = await ChannelModel.findOne({
       handle: { $regex: `^${trimmedHandle}$`, $options: 'i' }
     })
@@ -54,4 +55,3 @@ export const getChannelByHandle = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
-

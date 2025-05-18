@@ -2,15 +2,18 @@ import React,{useRef} from "react";
 import '../App.css';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useGlobal } from "../Context/GlobalContext";
+// List of filter categories to display as buttons
 const filters = [
     'All', 'Live', 'Music',"Movie",'Education','Gaming', 'Programming',
     'Food', 'Health', 'Wellness', 'Nature',"Yoga",,'T-Series'
   ];
   
   const FilterButtons = () => {
+    // Get current selected filter and setter from global context
     const {selectedFilter,setSelectedFilter}=useGlobal();
+    // Ref for the container holding filter buttons
     const scrollRef = useRef(null);
-
+// Scroll the filter container 200px to the left smoothly
   const scrollLeft = () => {
     scrollRef.current.scrollBy({ left: -200, behavior: 'smooth' });
   };

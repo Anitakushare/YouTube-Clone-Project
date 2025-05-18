@@ -1,5 +1,5 @@
 import { useRouteError, Link } from "react-router-dom";
-
+//Error handler function to all the routes
 function ErrorHandler() {
   const err = useRouteError();
   console.log(err);

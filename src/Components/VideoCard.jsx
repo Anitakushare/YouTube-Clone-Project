@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { EllipsisVertical } from "lucide-react";
-
+//VideoCard component: used to display a video in either horizontal or vertical format..
 const VideoCard = ({
   video,
   horizontal = false,
@@ -10,6 +10,7 @@ const VideoCard = ({
   showMenu,
 }) => {
   const [menuOpen, setMenuOpen] = useState(false);
+  {/**Horizontal layout */}
   if (horizontal) {
     return (
       <Link to={`/video/${video._id}`} className="flex gap-3 mb-4 w-full">

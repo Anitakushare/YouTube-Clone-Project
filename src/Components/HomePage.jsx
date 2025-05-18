@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Sidebar from './Sidebar';
 import FilterButtons  from './FilterButtons';
 import VideoList from './VideoList';
 import { useAuth } from '../Context/AuthContext';
 import { useGlobal } from '../Context/GlobalContext';
-//import useFetch from '../Utils/useFetch';
+
+//Home page component shows sidebar,filter buttons and video grid
 const HomePage = () => {
 const { isSidebarOpen } = useGlobal();
 const {user}=useAuth();

@@ -1,28 +1,18 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState} from "react";
 import {
   ThumbsUp,
   ThumbsDown,
   Pencil,
   Trash2,
   EllipsisVertical,
-} from "lucide-react";
-
+} from "lucide-react";//lucid icon
+//comment item component
 const CommentItem = ({ comment, currentUser, onEdit, onDelete }) => {
   const [showMenu, setShowMenu] = useState(false);
   const ref = useRef();
 
-  useEffect(() => {
-    const handleClickOutside = (e) => {
-      if (ref.current && !ref.current.contains(e.target)) {
-        setShowMenu(false);
-      }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
-
-  const isUser = comment.postedBy?.user?._id === currentUser?._id;
-
+ //only when isuser true is can edit and delete the comment
+  const isUser = comment.postedBy?._id === currentUser?.userId;
   return (
     <div className="flex space-x-3 relative">
       {/* Avatar */}

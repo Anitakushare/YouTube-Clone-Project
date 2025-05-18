@@ -11,7 +11,7 @@ import CommentPage from "./CommentPage";
 import { useAuth } from "../Context/AuthContext";
 import { updateViewCount } from "../Utils/VideoApi";
 
-
+//Main Video Player page:It display video player,like ,dislike,comments,recomended video
 function VideoPlayerPage() {
   const { data } = useFetch();
   const [expanded, setExpanded] = useState(false);
@@ -23,7 +23,7 @@ function VideoPlayerPage() {
 const userId=user?.userId;
   
   const videoRef = useRef(null);
-//fetch video by Id
+//fetch video by Id Api call
   useEffect(() => {
     const fetchVideo = async () => {
       try {

@@ -1,5 +1,6 @@
 import React from 'react'
-  
+  // SidebarItem: component to display each item in the sidebar.
+  //collapsed: Boolean indicating if the sidebar is in collapsed mode
 const SidebarItem = ({ icon, label, collapsed }) => (
     <div
       className={`flex items-center p-2 hover:bg-gray-100 rounded-lg cursor-pointer w-full ${

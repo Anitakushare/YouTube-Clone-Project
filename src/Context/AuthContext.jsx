@@ -11,13 +11,14 @@ export const AuthProvider = ({ children }) => {
     const storedUser = localStorage.getItem('user');
     if (storedUser) setUser(JSON.parse(storedUser));
   }, []);
-
+//login function
   const login = (userData, token) => {
+    //save token to local storage
     localStorage.setItem('token', token);
     localStorage.setItem('user', JSON.stringify(userData));
     setUser(userData);
   };
-
+//User logout function
   const logout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('user');

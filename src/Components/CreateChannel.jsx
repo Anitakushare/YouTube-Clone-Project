@@ -5,28 +5,34 @@ import { User } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 const CreateChannel = ({ onCancel }) => {
-    const navigate=useNavigate();
+    const navigate=useNavigate();// Used to redirect after channel creation
+
+    // Form state to hold input values for channel creation
   const [form, setForm] = useState({
     channelName: "",
     handle: "",
     description: "",
     channelBanner: "",
   });
+   // State for showing error messages if channel creation fails
   const [error, setError] = useState("");
+  // Get logged-in user info from auth context
   const { user } = useAuth();
-
+// Update form state when any input changes
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
-
+ // Handle form submission to create a new channel
   const handleSubmit = async (e) => {
     e.preventDefault();
     const token = localStorage.getItem("token");
 
     try {
+       // Call API to create channel with form data and token
       const response = await createChannel(form, token);
       const newChannel = response.data;
       setForm(newChannel);
+      // Redirect user to the newly created channel's page using its handle
       navigate(`/channel/${newChannel.handle}`);
     } catch (err) {
       setError(err.response?.data?.message || "Channel creation failed.");
@@ -34,6 +40,7 @@ const CreateChannel = ({ onCancel }) => {
   };
 
   return (
+     // Overlay covering entire screen with blur effect, fixed position and z-index for modal
     <div className="fixed inset-0 bg-transparent bg-opacity-40 backdrop-blur-sm flex justify-center items-start pt-16 z-50 overflow-auto">
       {/* Overlay */}
       <div

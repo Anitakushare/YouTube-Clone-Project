@@ -1,6 +1,6 @@
 import CommentModel from "../Model/comment.model.js";
 import VideoModel from "../Model/video.model.js";
-//Add Comment
+//Add Comment Function
 export const addComment = async (req, res) => {
   try {
     const { content, video } = req.body;
@@ -44,7 +44,7 @@ export const getComments = async (req, res) => {
   }
 };
 
-// ✅ Update Comment
+//  Update Comment
 export const updateComment = async (req, res) => {
   try {
     const { commentId } = req.params;
@@ -59,7 +59,7 @@ export const updateComment = async (req, res) => {
   }
 };
 
-// ✅ Delete Comment
+//Delete Comment function
 export const deleteComment = async (req, res) => {
   try {
     await CommentModel.findByIdAndDelete(req.params.commentId);

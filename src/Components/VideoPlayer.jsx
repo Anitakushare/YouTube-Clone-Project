@@ -14,7 +14,7 @@ import {
   RectangleHorizontal,
   MessageSquare,
 } from "lucide-react";
-
+//Video Player:it shows video player with controll function
 function VideoPlayer({ videoUrl}) {
  const videoRef = useRef(null);
   const progressRef = useRef(null);

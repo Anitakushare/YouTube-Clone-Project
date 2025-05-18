@@ -11,12 +11,12 @@ const ChannelHeader = ({ channel, notFound,activeTab,setActiveTab }) => {
   const handleNavigate=()=>{
     navigate("/CreateChannel");
   }
-
+//Read more toggle
   const handleReadMoreToggle = () => {
     setShowFullDescription(!showFullDescription);
   };
   
-  // If user doesn't have a channel
+  // If user doesn't have a channel display this
   if (notFound) {
     return (
       <div className="bg-gray-100 px-4 sm:px-6 lg:px-8 py-6 min-h-screen rounded-lg">
@@ -61,7 +61,7 @@ const ChannelHeader = ({ channel, notFound,activeTab,setActiveTab }) => {
     );
   }
 
-  // If user has a channel
+  // If user has a channel then display channel information
   return (
     <div>
       <img
@@ -103,7 +103,6 @@ const ChannelHeader = ({ channel, notFound,activeTab,setActiveTab }) => {
           </button>
         </div>
       </div>
-
        <div className="mt-6 border-b border-gray-200">
         <nav className="flex space-x-6 text-sm font-medium text-gray-600">
           {["Home", "Videos", "Shorts", "Live", "Playlists", "Community"].map((tab) => (

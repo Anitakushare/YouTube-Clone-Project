@@ -2,18 +2,13 @@ import React, { useState ,useEffect} from "react";
 import { addVideo,updateVideo} from "../Utils/VideoApi";
 import { useAuth } from "../Context/AuthContext";
 import { useGlobal } from "../Context/GlobalContext";
-//import { useParams } from "react-router-dom";
-
+//Category button for video category
 const categories = ["Music", "Live", "Entertainment", "Sports", "Gaming", "News", "Other"];
 
-export default function VideoUpload({ onClose ,editingVideo,onUpdate}) {
+export default function VideoUpload({ onClose ,editingVideo,onUpdate,onVideoUploaded}) {
   const {channel}=useGlobal()
     const {user}=useAuth();
     const channelId = channel?._id;
-   
- //const { handle } = useParams(); // get channel handle from URL
-
-  
   const [formData, setFormData] = useState({
     title: "",
     thumbnailUrl: "",
@@ -21,10 +16,10 @@ export default function VideoUpload({ onClose ,editingVideo,onUpdate}) {
     description: "",
     category: "",
   });
-
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
+  //Edit video function
    useEffect(() => {
     if (editingVideo) {
       setFormData({
@@ -37,12 +32,12 @@ export default function VideoUpload({ onClose ,editingVideo,onUpdate}) {
     }
   }, [editingVideo]);
 
-
+//handle input data
   const handleChange = (e) => {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
     setErrors((prev) => ({ ...prev, [e.target.name]: null }));
   };
-
+//validate function
   const validate = () => {
     const newErrors = {};
     if (!formData.title.trim()) newErrors.title = "Title is required";
@@ -53,12 +48,13 @@ export default function VideoUpload({ onClose ,editingVideo,onUpdate}) {
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
-
+//handle submit function
   const handleSubmit = async (e) => {
   e.preventDefault();
   if (!validate()) return;
 
   try {
+    //if set loading true get token from localstorage
     setLoading(true);
     const token = localStorage.getItem("token");
     const userId = user.userId;
@@ -71,7 +67,8 @@ export default function VideoUpload({ onClose ,editingVideo,onUpdate}) {
     if (editingVideo) {
       // Update existing video
       const updatedVideo=await updateVideo(editingVideo._id, payload, token);
-     onUpdate(updatedVideo); // Notify parent of the update
+     onUpdate(updatedVideo);
+     onVideoUploaded(response); // Notify parent of the update
     onClose(); // Close the modal
       setMessage("Video updated successfully!");
     } else {
@@ -82,7 +79,7 @@ export default function VideoUpload({ onClose ,editingVideo,onUpdate}) {
 
       setMessage("Video uploaded successfully!");
     }
-
+//after submission empty form data
     setFormData({
       title: "",
       thumbnailUrl: "",
@@ -98,6 +95,7 @@ export default function VideoUpload({ onClose ,editingVideo,onUpdate}) {
     setLoading(false);
   }
 };
+//upload form
   return (
     <div className="fixed inset-0 bg-transparent bg-opacity-40 backdrop-blur-sm flex justify-center items-start pt-16 z-50 overflow-auto">
       <div className="bg-white rounded-lg w-full max-w-3xl shadow-lg p-6">

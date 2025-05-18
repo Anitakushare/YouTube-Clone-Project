@@ -2,12 +2,15 @@ import { useState } from "react";
 import { Search, Mic } from "lucide-react";
 import { useGlobal } from "../Context/GlobalContext";
 import { useNavigate, useLocation } from "react-router-dom";
-
+//search bar component
 const SearchBar = () => {
+  // State to toggle mobile search overlay
   const [showMobileSearch, setShowMobileSearch] = useState(false); 
   const { searchTerm, setSearchTerm } = useGlobal();
+  // Router hooks for navigation and current route
   const navigate = useNavigate();
   const location = useLocation();
+    // Handle search button click
   const handleSearch = () => {
   if (searchTerm.trim() !== "") {
     setSearchTerm(searchTerm);
@@ -16,7 +19,6 @@ const SearchBar = () => {
     }
   }
 }
-  
   return (
     <>
       {/* Mobile Search */}

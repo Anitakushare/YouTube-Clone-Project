@@ -1,12 +1,95 @@
-# React + Vite
+You Tube Frontend
+A React + Vite frontend for browsing videos with filtering, built using ContextApi, React Router, and Tailwind CSS.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Features
+Fetches videos from a backend API
+Displays dummy video with recommended side videos
+Filters videos by search text and filter Buttons
+Responsive UI with Tailwind CSS
+Loading placeholders while fetching data
+Context Api for managing  state
+React Router for navigation
+Technologies Used
+React 
+Vite 
+Context Api
+React Router 
+Tailwind CSS 3
+Axios
+React Icons
+Getting Started
 
-Currently, two official plugins are available:
+Prerequisites
+Node.js 
+npm or yarn
+Installation
+git clone https://github.com/Anitakushare/YouTube-Clone-Project
+cd YouTube-Clone-Project
+npm install
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
-## Expanding the ESLint configuration
+Run Development Server
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+ npm run dev
+
+
+Component Overview
+
+Home.jsx: Fetches and filters videos based on search; displays tags and video cards.
+
+VideoPlayerPage.jsx: Displays selected video with a sidebar of recommended videos.
+
+videoPlayerPage.jsx: Renders video thumbnail, title, channel info,like dislikes, and views.
+
+HomePage.jsx & : Video grid display with search and filter functionality.
+
+ChannelPage.jsx:Display channel belogs to Specific User channel info and video with edit and delete 
+functionality,also upload video .
+
+Youtube BackEnd
+
+A backend server built with Express.js, MongoDB, and JWT for authentication.
+
+Features
+RESTful API built with Express.js 
+MongoDB integration using Mongoose
+User authentication with JWT (jsonwebtoken)
+Password hashing with bcrypt
+Environment variables support via dotenv
+CORS enabled for cross-origin requests
+Auto-restart during development using nodemon
+Getting Started
+Prerequisites
+Node.js (v16+ recommended)
+npm (comes with Node.js)
+MongoDB database (local or cloud)
+Installation
+Clone the repository:
+
+git clone https://github.com/nitin-sharma-7/yt_server.git
+cd yt_backend
+Install dependencies: npm install
+
+Create a .env file in the root directory and add your environment variables, eg
+
+SECRET_KEY=YoutubeCloneDev123
+MONGODB_URI=mongodb://localhost:27017/YouTubeDb
+PORT=3000
+
+Running the Server
+npm run dev npm start
+
+Dependencies
+express
+
+mongoose
+
+jsonwebtoken
+
+bcrypt
+
+cors
+
+dotenv
+
+nodemon

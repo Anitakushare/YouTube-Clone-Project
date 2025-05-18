@@ -4,7 +4,6 @@ import ChannelModel from "../Model/channel.model.js";
 
 //Add videos to videos Collection
 export const addVideo = async (req, res) => {
-  console.log(req.body)
   try {
     const {
       title,
@@ -44,7 +43,7 @@ export const addVideo = async (req, res) => {
       likes: [],
       dislikes: [],
       views: [],
-      uploader: req.user.id, // Use logged-in user ID directly for uploader
+      uploader: req.user.id, 
       createdAt: new Date(),
     });
 
@@ -148,6 +147,7 @@ if (updatedField.action === "views" && updatedField.userId) {
       .json({ message: "Error updating video", error: error.message });
   }
 };
+//Update viw count function 
 export const updateViewCount=async(req,res)=>{
   const { id } = req.params;
   const { userId } = req.body;

@@ -8,31 +8,28 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import ErrorHandler from './Components/ErrorHandler.jsx'
 import { AuthProvider } from './Context/AuthContext.jsx';
 import { GlobalContextProvider } from './Context/GlobalContext.jsx';
-//import UploadVideo from './Components/UploadVideo.jsx';
-// import CreateChannel from './Components/CreateChannel.jsx';
-// import ChannelPage from './Components/ChannelPage.jsx';
 
+// Lazy load components to split code and improve initial load performance
 const VideoPlayerPage = lazy(() => import('./Components/VideoPlayerPage.jsx'));
 const Login = lazy(() => import('./Components/Login.jsx'));
 const Register = lazy(() => import('./Components/Register.jsx'));
 const CreateChannel = lazy(() => import('./Components/CreateChannel.jsx'));
 const ChannelPage=lazy(()=>import('./Components/ChannelPage.jsx'));
-
 const UploadVideo=lazy(()=>import('./Components/UploadVideo.jsx'));
 
 
 const appRoute=createBrowserRouter([
   {
     path: "/",
-    element:  <App />,
+    element:  <App />, // Main App component wrapping nested routes
     children: [
       {
         index: true,
         element:       
-            <HomePage />
+            <HomePage />,// Home page component (non-lazy loaded)
       },
       {
-        path: "/video/:id",
+        path: "/video/:id", // Video player page with dynamic :id param
         element: (
           <Suspense fallback={<div>Loading...</div>}>
             <VideoPlayerPage />
@@ -40,32 +37,32 @@ const appRoute=createBrowserRouter([
         ),
       },
       {
-    path: "/CreateChannel",
+    path: "/CreateChannel",  // Create channel page route
     element: (<Suspense fallback={<div>Loading...</div>}>
         <CreateChannel />
       </Suspense>
     ),
   },
   {
-    path: "/channel/:handle",
+    path: "/channel/:handle",  // Channel page with dynamic :handle param
     element: (<Suspense fallback={<div>Loading...</div>}>
     
         <ChannelPage />
       </Suspense>
     ),
   },{
-    path:"/channel/:handle/UploadVideo",
+    path:"/channel/:handle/UploadVideo",  // Upload video page under a channel
     element:(<Suspense fallback={<div>Loading...</div>}>
       <UploadVideo />
       </Suspense>)
   }
-    ],
+    ],//Fallback error UI for any errors in this route branch
     errorElement: (
         <ErrorHandler />
     ),
   },
   {
-    path: "/register",
+    path: "/register",  // Register page route outside main App layout
     element: (
       <Suspense fallback={<div>Loading...</div>}>
         <Register />
@@ -73,7 +70,7 @@ const appRoute=createBrowserRouter([
     ),
   },
   {
-    path: "/login",
+    path: "/login",  // Login page route outside main App layout
     element: (
       <Suspense fallback={<div>Loading...</div>}>
         <Login />
@@ -82,7 +79,7 @@ const appRoute=createBrowserRouter([
   },
   
 ])
-
+// Render the app root to the DOM
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <AuthProvider>

@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 const connectDB = async () => {
     try {
-      //connect to the shopyglobe database
+      //connect to the Youtube database
       await mongoose.connect("mongodb://localhost:27017/YouTubeDb");
       console.log('Database connected successfully');
     } catch (err) {

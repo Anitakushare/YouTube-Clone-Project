@@ -16,7 +16,7 @@ const ChannelPage = () => {
   const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
   const [editingVideo, setEditingVideo] = useState(null);
-  const [videos, setVideos] = useState();
+  const [videos, setVideos] = useState([]);
  //const [videoFilter, setVideoFilter] = useState('Latest');
     const [activeTab,setActiveTab]=useState("Home");
   const [notFound, setNotFound] = useState(false);
@@ -52,6 +52,7 @@ const ChannelPage = () => {
     setEditingVideo(video);
     setShowModal(true);
   };
+  //notify parent to update 
   const handleVideoUpdate = (updatedVideo) => {
     setVideos((prevVideos) =>
       prevVideos.map((video) =>
@@ -75,22 +76,6 @@ const ChannelPage = () => {
       console.error("Delete failed", err);
     }
   };
-  //Filter video by catagory like Popular ,Latest,Older
-  //   const getFilteredVideos = () => {
-  //   if (!channel?.videos) return [];
-  
-  //   let filtered = [...channel.videos];
-  
-  //   if (videoFilter === "Latest") {
-  //     filtered.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-  //   } else if (videoFilter === "Oldest") {
-  //     filtered.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
-  //   } else if (videoFilter === "Popular") {
-  //     filtered.sort((a, b) => b.likes.length - a.likes.length); // or b.views - a.views
-  //   }
-  
-  //   return filtered;
-  // };
   return (
     <div className="relative flex">
       {/**sidebar Toggel */}

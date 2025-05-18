@@ -7,24 +7,24 @@ import {
   deleteComment,
 } from "../Utils/CommentsApi";
 import CommentItem from "./CommentItem";
-
+//comment Page
 const CommentPage = ({ videoId, setVideo }) => {
   const [comments, setComments] = useState([]);
   const [content, setContent] = useState("");
   const [editingId, setEditingId] = useState(null);
   const [isFocused, setIsFocused] = useState(false);
-
+//get token from local storage 
   const user = JSON.parse(localStorage.getItem("user"));
   const token = localStorage.getItem("token");
 
   const handleFocus = () => setIsFocused(true);
-
+// Cancel editing or adding comment: reset states and hide buttons
   const handleCancel = () => {
     setIsFocused(false);
     setContent("");
     setEditingId(null);
   };
-
+ //load comment function :Fetch all comments from db
   const loadComments = async () => {
     try {
       const res = await fetchComments(videoId);
@@ -34,26 +34,29 @@ const CommentPage = ({ videoId, setVideo }) => {
       console.error("Failed to load comments", error);
     }
   };
-
+// Load comments whenever the videoId changes
   useEffect(() => {
     if (videoId) {
       loadComments();
     }
   }, [videoId]);
-
+// Handle adding a new comment or updating an existing comment
   const handleComment = async () => {
     if (!content.trim()) return;
 
     try {
       if (editingId) {
+          // If editing, update the comment via API
         await updateComment(editingId, content, token);
         setEditingId(null);
       } else {
+          // If new comment, add it via API
         const res = await addComment(videoId, content, token);
         if (res.data && res.data.updatedVideo) {
-          setVideo(res.data.updatedVideo); // Optional: if backend returns updated video
+          setVideo(res.data.updatedVideo); 
         }
       }
+      // Clear input and hide buttons after submit
       setContent("");
       setIsFocused(false);
       loadComments();
@@ -61,7 +64,7 @@ const CommentPage = ({ videoId, setVideo }) => {
       console.error("Failed to post/update comment", err);
     }
   };
-
+ // Handle deleting a comment by its ID
   const handleDelete = async (commentId) => {
     try {
       await deleteComment(commentId, token);
