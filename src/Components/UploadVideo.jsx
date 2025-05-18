@@ -5,7 +5,7 @@ import { useGlobal } from "../Context/GlobalContext";
 //Category button for video category
 const categories = ["Music", "Live", "Entertainment", "Sports", "Gaming", "News", "Other"];
 
-export default function VideoUpload({ onClose ,editingVideo,onUpdate,onVideoUploaded}) {
+export default function VideoUpload({ onClose ,editingVideo,onUpdate}) {
   const {channel}=useGlobal()
     const {user}=useAuth();
     const channelId = channel?._id;
@@ -68,7 +68,6 @@ export default function VideoUpload({ onClose ,editingVideo,onUpdate,onVideoUplo
       // Update existing video
       const updatedVideo=await updateVideo(editingVideo._id, payload, token);
      onUpdate(updatedVideo);
-     onVideoUploaded(response); // Notify parent of the update
     onClose(); // Close the modal
       setMessage("Video updated successfully!");
     } else {
