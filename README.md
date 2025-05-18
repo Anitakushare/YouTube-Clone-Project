@@ -83,6 +83,7 @@ npm install
 - Installation
 - Clone the repository:
 - Create a .env file in the root directory and add your environment variables, eg
+- 
 ```bash
 SECRET_KEY=YoutubeCloneDev123
 MONGODB_URI=mongodb://localhost:27017/YouTubeDb
