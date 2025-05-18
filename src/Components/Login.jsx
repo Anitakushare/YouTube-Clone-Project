@@ -75,7 +75,7 @@ const Login = () => {
           </button>
         </form>
         <p className="text-xs text-center mt-4 text-gray-500">
-          Not a member? <Link href="/register" className="text-red-500">Register now</Link>
+          Not a member? <Link to="/register" className="text-red-500">Register now</Link>
         </p>
       </div>
     </div>
